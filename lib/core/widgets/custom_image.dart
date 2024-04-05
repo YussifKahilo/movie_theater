@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '/core/extensions/padding_manager.dart';
 
 import '../manager/assets_manager.dart';
 import '../manager/color_manager.dart';
+import '/core/extensions/padding_manager.dart';
 import '/core/manager/values_manager.dart';
 
 class CustomImage extends StatelessWidget {
@@ -19,6 +19,7 @@ class CustomImage extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit? fit;
+  final String? basePath;
   const CustomImage({
     Key? key,
     this.loadingColor,
@@ -30,6 +31,7 @@ class CustomImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit,
+    this.basePath,
   }) : super(key: key);
 
   @override
@@ -66,7 +68,7 @@ class CustomImage extends StatelessWidget {
               fit: fit ?? BoxFit.fill,
             )
           : CachedNetworkImage(
-              imageUrl: imageUrl!,
+              imageUrl: '${basePath ?? ''}${imageUrl!}',
               height: height,
               width: width,
               fit: fit ?? BoxFit.fill,

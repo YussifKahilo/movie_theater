@@ -16,4 +16,5 @@ class AssetsManager {
   static const String lightThemeIcon = '$svgPath/light mode.svg';
   static const String darkThemeIcon = '$svgPath/dark mode.svg';
   static const String alertIcon = '$svgPath/alert.svg';
+  static const String starIcon = '$svgPath/Star.svg';
 }

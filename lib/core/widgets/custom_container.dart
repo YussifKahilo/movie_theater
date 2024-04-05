@@ -114,7 +114,13 @@ class CustomContainer extends StatelessWidget {
 
   Widget childWidget(context) => (child ??
           CustomText(text ?? StringsManager.button,
-              textStyle: textStyle ??
+              textStyle: textStyle?.copyWith(
+                      fontSize: textFont?.rf,
+                      color: transparentButton
+                          ? color ?? ColorsManager.primaryColor
+                          : isFilled
+                              ? textColor ?? ColorsManager.whiteColor
+                              : color ?? ColorsManager.primaryColor) ??
                   ThemesManager.getBodySmallTextStyle(context).copyWith(
                       fontSize: textFont?.rf,
                       color: transparentButton

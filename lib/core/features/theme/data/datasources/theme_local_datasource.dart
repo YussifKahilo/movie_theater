@@ -20,6 +20,6 @@ class ThemeLocalDataSourceImpl implements ThemeLocalDataSource {
   Future<String> getSavedTheme() async {
     return cacheConsumer.checkForData(key: CacheKeys.theme)
         ? cacheConsumer.getData(key: CacheKeys.theme)!
-        : 'light';
+        : 'dark';
   }
 }

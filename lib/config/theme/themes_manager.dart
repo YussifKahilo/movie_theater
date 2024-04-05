@@ -156,14 +156,19 @@ class Themes {
             .copyWith(color: color, fontSize: FontSize.f16),
         bodyLarge: FontStyles.getMediumStyle()
             .copyWith(color: color, fontSize: FontSize.f18),
-        titleMedium: FontStyles.getBoldStyle()
-            .copyWith(color: color, fontSize: FontSize.f20),
         titleSmall: FontStyles.getBoldStyle()
+            .copyWith(color: color, fontSize: FontSize.f20),
+        titleMedium: FontStyles.getBoldStyle()
             .copyWith(color: color, fontSize: FontSize.f22),
+        titleLarge: FontStyles.getBoldStyle()
+            .copyWith(color: color, fontSize: FontSize.f24),
       );
 }
 
 class ThemesManager {
+  static TextStyle getTitleLargeTextStyle(context) =>
+      Theme.of(context).textTheme.titleLarge!;
+
   static TextStyle getTitleMediumTextStyle(context) =>
       Theme.of(context).textTheme.titleMedium!;
 

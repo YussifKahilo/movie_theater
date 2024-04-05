@@ -3,6 +3,7 @@ class StringsManager {
   static const String apiKeyEnvKey = "apiKey";
 
   static const String appName = 'Movie Theater';
+  static const String imageBasePath = "https://image.tmdb.org/t/p/w500/";
 
   // Standards********************************************
   static const String undefinedRoute = 'Undefined Route';
