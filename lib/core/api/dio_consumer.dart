@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../manager/strings_manager.dart';
 import '/core/api/api_consumer.dart';
 import '../../src/injection_container.dart' as di;
 import '../errors/exceptions.dart';
@@ -29,7 +31,11 @@ class DioConsumer implements ApiConsumer {
       {required String url, Map<String, dynamic>? query}) async {
     try {
       cancelToken = CancelToken();
-
+      if (query != null) {
+        query.addAll({'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!});
+      } else {
+        query = {'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!};
+      }
       return await dio.get(url,
           queryParameters: query, cancelToken: cancelToken);
     } on DioException catch (e) {

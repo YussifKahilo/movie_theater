@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_theater/config/routes/routes.dart';
 import '../../../../manager/assets_manager.dart';
 import '/core/manager/values_manager.dart';
 
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _startDelay() {
     _timer = Timer(const Duration(seconds: Values.splashDurationSeconds), () {
-      //TODO: navigate to the screen after the splash
+      Navigator.pushNamed(context, Routes.homeScreen);
     });
   }
 

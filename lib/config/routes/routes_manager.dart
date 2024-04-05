@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:movie_theater/features/movies/presentation/screens/home_screen.dart';
 import '../../core/features/splash/presentation/screens/splash_screen.dart';
 import '/config/routes/routes.dart';
 import '/core/manager/strings_manager.dart';
@@ -14,6 +15,9 @@ class RoutesManager {
     switch (settings.name) {
       case Routes.splashScreen:
         screen = const SplashScreen();
+        break;
+      case Routes.homeScreen:
+        screen = const HomeScreen();
         break;
       default:
         screen = _undefinedRouteScreen();

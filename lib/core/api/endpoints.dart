@@ -1,7 +1,7 @@
 class EndPoints {
   static const String movie = 'movie/';
   static const String topRatedMovies = '$movie/top_rated';
-  static const String popularMovies = '$movie/popular';
+  static const String upComing = 'discover/movie';
 
   static const String createRequestToken = 'authentication/token/new';
   static const String login = 'authentication/token/validate_with_login';

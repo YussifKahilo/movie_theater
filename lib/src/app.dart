@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_theater/features/movies/domain/entities/movie.dart';
+import 'package:movie_theater/features/movies/presentation/cubit/movies_cubit.dart';
 import '../config/routes/routes.dart';
 import '../config/routes/routes_manager.dart';
 import '../config/theme/themes_manager.dart';
@@ -30,6 +32,11 @@ class MyApp extends StatelessWidget {
               changeThemeUseCase: diInstance())
             ..getSavedTheme(),
         ),
+        BlocProvider(
+          create: (context) => MoviesCubit(diInstance())
+            ..getMoviesList(MovieSection.upComing)
+            ..getMoviesList(MovieSection.topRated),
+        )
       ],
       child: ScreenUtilInit(
         designSize: Size(designWidth ?? 428, designHeight ?? 926),
