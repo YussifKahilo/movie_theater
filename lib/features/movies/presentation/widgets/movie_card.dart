@@ -63,6 +63,7 @@ class MovieCard extends StatelessWidget {
               child: Row(
                 children: [
                   CustomContainer(
+                    color: ColorsManager.transparent,
                     shadowColor: ColorsManager.blackColor,
                     haveShadows: true,
                     child: Stack(
@@ -70,7 +71,7 @@ class MovieCard extends StatelessWidget {
                         CustomImage(
                           basePath: StringsManager.imageBasePath,
                           imageUrl: movie.posterPath,
-                          width: AppSize.s100.rh,
+                          width: AppSize.s100.rw,
                         ),
                         Positioned(
                           top: 0,
