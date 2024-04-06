@@ -152,7 +152,7 @@ class MainLayoutScreen extends StatelessWidget {
                     ),
                   );
                 },
-              ).withPadding(PaddingValues.p35.pOnlyBottom),
+              ).withPadding(PaddingValues.p45.pOnlyBottom),
             )
           ],
         ),

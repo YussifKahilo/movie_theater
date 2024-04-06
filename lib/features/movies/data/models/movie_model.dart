@@ -15,7 +15,6 @@ class MovieModel extends Movie {
       super.status,
       super.tagline,
       super.homePageUrl,
-      super.movieSection,
       super.runtime,
       super.productionCompanies});
 
@@ -31,9 +30,6 @@ class MovieModel extends Movie {
       status: map['status'],
       voteCount: map['vote_count'],
       voteAverage: map['vote_average'],
-      movieSection: map['movie_section'] != null
-          ? MovieSection.values[map['movie_section']]
-          : null,
       runtime: map['runtime'],
       tagline: map['tagline'],
       productionCompanies: map['production_companies'] == null
@@ -55,7 +51,6 @@ class MovieModel extends Movie {
       'status': status,
       'vote_count': voteCount,
       'vote_average': voteAverage,
-      'movie_section': movieSection?.index,
       'runtime': runtime,
       'tagline': tagline,
       'production_companies':

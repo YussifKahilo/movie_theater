@@ -35,7 +35,7 @@ class MovieCard extends StatelessWidget {
           CustomImage(
             basePath: StringsManager.imageBasePath,
             imageUrl: movie.backDropImagePath,
-            height: AppSize.s120.rh,
+            height: AppSize.s140.rh,
           ),
           Positioned(
             top: 0,
@@ -70,7 +70,6 @@ class MovieCard extends StatelessWidget {
                         CustomImage(
                           basePath: StringsManager.imageBasePath,
                           imageUrl: movie.posterPath,
-                          height: AppSize.s100.rh,
                           width: AppSize.s100.rh,
                         ),
                         Positioned(
@@ -157,7 +156,7 @@ class MovieCard extends StatelessWidget {
                     ).withPadding(PaddingValues.p2.pSymmetricV),
                   )
                 ],
-              ).withPadding(PaddingValues.p10.pSymmetricVH),
+              ).withPadding(PaddingValues.p15.pSymmetricVH),
             ),
           )
         ],

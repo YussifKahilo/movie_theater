@@ -4,6 +4,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie_theater/core/db/db_consumer.dart';
 import 'package:movie_theater/core/db/sql_consumer.dart';
 import 'package:movie_theater/core/manager/strings_manager.dart';
+import 'package:movie_theater/features/movies/data/datasources/movies_local_datasource.dart';
 import 'package:movie_theater/features/movies/data/datasources/movies_remote_datasource.dart';
 import 'package:movie_theater/features/movies/data/repositories/movies_repository_impl.dart';
 import 'package:movie_theater/features/movies/domain/repositories/movies_repository.dart';
@@ -79,9 +80,11 @@ Future<void> initMoviesModule() async {
 
   //?Repositories
   diInstance.registerLazySingleton<MoviesRepository>(
-      () => MoviesRepositoryImpl(diInstance(), diInstance()));
+      () => MoviesRepositoryImpl(diInstance(), diInstance(), diInstance()));
 
   //?Data Sources
   diInstance.registerLazySingleton<MoviesRemoteDataSource>(
       () => MoviesRemoteDataSourceImpl(diInstance()));
+  diInstance.registerLazySingleton<MoviesLocaleDataSource>(
+      () => MoviesLocaleDataSourceImpl(diInstance()));
 }

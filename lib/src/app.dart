@@ -7,6 +7,7 @@ import '../config/routes/routes_manager.dart';
 import '../config/theme/themes_manager.dart';
 import '../core/features/theme/presentation/cubit/theme_cubit.dart';
 import '../core/manager/strings_manager.dart';
+import '../core/network/cubit/network_connectivity_cubit.dart';
 import 'injection_container.dart';
 
 class MyApp extends StatelessWidget {
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => MoviesCubit(diInstance()),
+        ),
+        BlocProvider(
+          create: (context) => NetworkConnectivityCubit(),
         )
       ],
       child: ScreenUtilInit(

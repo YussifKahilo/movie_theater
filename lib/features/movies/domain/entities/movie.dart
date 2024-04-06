@@ -11,7 +11,6 @@ class Movie {
   final String releaseDate;
   final num voteCount;
   final num voteAverage;
-  final MovieSection? movieSection;
   final num? runtime;
   final String? tagline;
   final String? status;
@@ -27,7 +26,6 @@ class Movie {
     required this.releaseDate,
     required this.voteCount,
     required this.voteAverage,
-    this.movieSection,
     this.runtime,
     this.tagline,
     this.status,
