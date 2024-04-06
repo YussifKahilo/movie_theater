@@ -142,7 +142,7 @@ class MovieCard extends StatelessWidget {
                                 color: ColorsManager.yellowColor,
                               ),
                               CustomText(
-                                '${movie.voteAverage.toString()} | ${movie.voteCount.toString()} votes',
+                                '${movie.voteAverage.toStringAsFixed(1)} | ${movie.voteCount.toString()} votes',
                                 color: ColorsManager.whiteColor,
                                 fontWeight: FontWeightManager.regular,
                                 textStyle:

@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _startDelay() {
     _timer = Timer(const Duration(seconds: Values.splashDurationSeconds), () {
-      Navigator.pushNamed(context, Routes.homeScreen);
+      Navigator.pushNamed(context, Routes.layoutScreen);
     });
   }
 

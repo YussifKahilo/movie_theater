@@ -15,12 +15,23 @@ import '/core/widgets/custom_error_widget.dart';
 import '/core/widgets/custom_svg.dart';
 import '/core/widgets/custom_text.dart';
 import '/core/widgets/loading.dart';
-import '/features/movies/domain/entities/movie.dart';
 import '/features/movies/presentation/cubit/movies_cubit.dart';
 import '/features/movies/presentation/widgets/upcoming_movies_section.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    MoviesCubit.get(context).getMoviesUpComingMoviesList();
+    MoviesCubit.get(context).getMoviesTopRatedMoviesList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,103 +53,115 @@ class HomeScreen extends StatelessWidget {
             ],
           ).withPadding(PaddingValues.p16.pSymmetricVH),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      'Discover',
-                      textStyle: ThemesManager.getTitleLargeTextStyle(context),
+            child: SingleChildScrollView(
+              padding: (ScreenUtil().bottomBarHeight + PaddingValues.p70)
+                  .pOnlyBottom,
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        'Discover',
+                        textStyle:
+                            ThemesManager.getTitleLargeTextStyle(context),
+                      ),
+                      CustomContainer(
+                        transparentButton: true,
+                        textStyle:
+                            ThemesManager.getDisplayLargeTextStyle(context),
+                        text: 'View more',
+                        onTap: () {},
+                      )
+                    ],
+                  ).withPadding(
+                      (PaddingValues.p16, PaddingValues.p20).pSymmetricVH),
+                  SizedBox(
+                    height: ScreenUtil().screenHeight / 3.25,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: BlocBuilder<MoviesCubit, MoviesState>(
+                            buildWhen: (previous, current) =>
+                                current is GetUpComingMoviesListFailedState ||
+                                current is GetUpComingMoviesListLoadingState ||
+                                current is GetUpComingMoviesListSuccessState,
+                            builder: (context, state) {
+                              if (state is GetUpComingMoviesListFailedState) {
+                                return CustomErrorWidget(
+                                  onTap: () => MoviesCubit.get(context)
+                                      .getMoviesUpComingMoviesList(),
+                                  error: state.message,
+                                );
+                              } else if (state
+                                  is GetUpComingMoviesListSuccessState) {
+                                return UpcomingMoviesSection(
+                                    movies: state.movies);
+                              } else {
+                                return const UpcomingMoviesSectionLoading();
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    CustomContainer(
-                      transparentButton: true,
-                      textStyle:
-                          ThemesManager.getDisplayLargeTextStyle(context),
-                      text: 'View more',
-                      onTap: () {},
-                    )
-                  ],
-                ).withPadding(
-                    (PaddingValues.p16, PaddingValues.p20).pSymmetricVH),
-                Expanded(
-                  child: BlocBuilder<MoviesCubit, MoviesState>(
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          CustomText(
+                            'Top Rated',
+                            textStyle:
+                                ThemesManager.getTitleLargeTextStyle(context),
+                          ),
+                          AppSize.s5.spaceW,
+                          const CustomSvg(
+                            AssetsManager.starIcon,
+                            color: ColorsManager.yellowColor,
+                            size: AppSize.s30,
+                          )
+                        ],
+                      ),
+                      CustomContainer(
+                        transparentButton: true,
+                        text: 'View more',
+                        textStyle:
+                            ThemesManager.getDisplayLargeTextStyle(context),
+                        onTap: () {},
+                      )
+                    ],
+                  ).withPadding(
+                      (PaddingValues.p16, PaddingValues.p20).pSymmetricVH),
+                  BlocBuilder<MoviesCubit, MoviesState>(
                     buildWhen: (previous, current) =>
-                        current is GetUpComingMoviesListFailedState ||
-                        current is GetUpComingMoviesListLoadingState ||
-                        current is GetUpComingMoviesListSuccessState,
+                        current is GetTopRatedMoviesListFailedState ||
+                        current is GetTopRatedMoviesListLoadingState ||
+                        current is GetTopRatedMoviesListSuccessState,
                     builder: (context, state) {
-                      if (state is GetUpComingMoviesListFailedState) {
+                      if (state is GetTopRatedMoviesListFailedState) {
                         return CustomErrorWidget(
                           onTap: () => MoviesCubit.get(context)
-                              .getMoviesList(MovieSection.upComing),
+                              .getMoviesTopRatedMoviesList(),
                           error: state.message,
                         );
-                      } else if (state is GetUpComingMoviesListSuccessState) {
-                        return UpcomingMoviesSection(movies: state.movies);
+                      } else if (state is GetTopRatedMoviesListSuccessState) {
+                        return Column(
+                          children: List.generate(
+                              state.movies.length,
+                              (index) => MovieCard(movie: state.movies[index])
+                                  .withPadding(PaddingValues.p15.pSymmetricV)),
+                        ).withPadding(PaddingValues.p16.pSymmetricH);
                       } else {
-                        return const UpcomingMoviesSectionLoading();
+                        return const Center(child: CustomLoading());
                       }
                     },
                   ),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  CustomText(
-                    'Top Rated',
-                    textStyle: ThemesManager.getTitleLargeTextStyle(context),
-                  ),
-                  AppSize.s5.spaceW,
-                  const CustomSvg(
-                    AssetsManager.starIcon,
-                    color: ColorsManager.yellowColor,
-                    size: AppSize.s30,
-                  )
                 ],
               ),
-              CustomContainer(
-                transparentButton: true,
-                text: 'View more',
-                textStyle: ThemesManager.getDisplayLargeTextStyle(context),
-                onTap: () {},
-              )
-            ],
-          ).withPadding((PaddingValues.p16, PaddingValues.p20).pSymmetricVH),
-          Expanded(
-            child: BlocBuilder<MoviesCubit, MoviesState>(
-              buildWhen: (previous, current) =>
-                  current is GetTopRatedMoviesListFailedState ||
-                  current is GetTopRatedMoviesListLoadingState ||
-                  current is GetTopRatedMoviesListSuccessState,
-              builder: (context, state) {
-                if (state is GetTopRatedMoviesListFailedState) {
-                  return CustomErrorWidget(
-                    onTap: () => MoviesCubit.get(context)
-                        .getMoviesList(MovieSection.upComing),
-                    error: state.message,
-                  );
-                } else if (state is GetTopRatedMoviesListSuccessState) {
-                  return SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: PaddingValues.p16.pSymmetricH,
-                    child: Column(
-                      children: List.generate(
-                          state.movies.length,
-                          (index) => MovieCard(movie: state.movies[index])
-                              .withPadding(PaddingValues.p20.pSymmetricV)),
-                    ),
-                  );
-                } else {
-                  return const Center(child: CustomLoading());
-                }
-              },
             ),
           ),
         ],

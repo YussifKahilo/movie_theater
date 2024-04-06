@@ -65,6 +65,6 @@ class UpcomingMovieCard extends StatelessWidget {
           )
         ],
       ),
-    ).withPadding(PaddingValues.p24.pSymmetricV);
+    ).withPadding(PaddingValues.p5.pSymmetricV);
   }
 }

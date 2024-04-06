@@ -14,7 +14,7 @@ extension PaddingManager on num {
   EdgeInsetsDirectional get pOnlyEnd => EdgeInsetsDirectional.only(end: rw);
   EdgeInsetsDirectional get pOnlyTop => EdgeInsetsDirectional.only(top: rh);
   EdgeInsetsDirectional get pOnlyBottom =>
-      EdgeInsetsDirectional.only(start: rh);
+      EdgeInsetsDirectional.only(bottom: rh);
 }
 
 extension PaddingsManager on (num, num) {

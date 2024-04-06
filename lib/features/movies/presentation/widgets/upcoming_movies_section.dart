@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_theater/core/cubit/custom_cubit.dart';
+import 'package:movie_theater/core/extensions/responsive_manager.dart';
 import 'package:movie_theater/core/manager/strings_manager.dart';
 import 'package:movie_theater/core/widgets/custom_image.dart';
 import 'package:movie_theater/features/movies/presentation/widgets/upcoming_movie_card.dart';
@@ -67,11 +68,11 @@ class UpcomingMoviesSection extends StatelessWidget {
             return Swiper(
               itemCount: movies.length,
               autoplay: true,
-              viewportFraction: 0.5,
+              viewportFraction: 0.45.rs,
               onIndexChanged: (value) {
                 CustomCubit.get<int>(context).changeState(value);
               },
-              scale: 0.4,
+              scale: 0.25.rs,
               itemBuilder: (context, index) => UpcomingMovieCard(
                 movie: movies[index],
               ),

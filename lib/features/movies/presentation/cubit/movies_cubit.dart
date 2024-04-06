@@ -14,22 +14,19 @@ class MoviesCubit extends Cubit<MoviesState> {
 
   static MoviesCubit get(context) => BlocProvider.of(context);
 
-  Future<void> getMoviesList(MovieSection movieSection) async {
-    emit(switch (movieSection) {
-      MovieSection.topRated => GetTopRatedMoviesListLoadingState(),
-      _ => GetUpComingMoviesListLoadingState(),
-    });
-    final result = await _getMoviesUsecase.call(movieSection);
+  Future<void> getMoviesTopRatedMoviesList() async {
+    emit(GetTopRatedMoviesListLoadingState());
+    final result = await _getMoviesUsecase.call(MovieSection.topRated);
     result.fold(
-        (l) => emit(switch (movieSection) {
-              MovieSection.topRated =>
-                GetTopRatedMoviesListFailedState(l.message ?? 'Error'),
-              _ => GetUpComingMoviesListFailedState(l.message ?? 'Error'),
-            }),
-        (r) => emit(switch (movieSection) {
-              MovieSection.topRated =>
-                GetTopRatedMoviesListSuccessState(r.$1, r.$2),
-              _ => GetUpComingMoviesListSuccessState(r.$1, r.$2),
-            }));
+        (l) => emit(GetTopRatedMoviesListFailedState(l.message ?? 'Error')),
+        (r) => emit(GetTopRatedMoviesListSuccessState(r.$1, r.$2)));
+  }
+
+  Future<void> getMoviesUpComingMoviesList() async {
+    emit(GetUpComingMoviesListLoadingState());
+    final result = await _getMoviesUsecase.call(MovieSection.upComing);
+    result.fold(
+        (l) => emit(GetUpComingMoviesListFailedState(l.message ?? 'Error')),
+        (r) => emit(GetUpComingMoviesListSuccessState(r.$1, r.$2)));
   }
 }
