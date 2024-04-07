@@ -127,7 +127,7 @@ class Themes {
         prefixIconColor: ColorsManager.primaryColor,
         suffixIconColor: ColorsManager.primaryColor,
         filled: true,
-        fillColor: ColorsManager.primaryDarkColor,
+        fillColor: ThemeData.dark().scaffoldBackgroundColor,
         errorBorder: _customBorder(ColorsManager.redColor),
         focusedBorder: _customBorder(ColorsManager.primaryColor),
         focusedErrorBorder: _customBorder(ColorsManager.primaryColor),

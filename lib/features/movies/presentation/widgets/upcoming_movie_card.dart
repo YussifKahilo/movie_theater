@@ -4,6 +4,7 @@ import 'package:movie_theater/core/manager/fonts_manager.dart';
 import 'package:movie_theater/core/manager/strings_manager.dart';
 import 'package:movie_theater/core/widgets/custom_image.dart';
 import 'package:movie_theater/features/movies/domain/entities/movie.dart';
+import '../../../../config/routes/routes.dart';
 import '../../../../core/manager/color_manager.dart';
 import '../../../../core/manager/values_manager.dart';
 import '../../../../core/widgets/custom_container.dart';
@@ -39,6 +40,9 @@ class UpcomingMovieCard extends StatelessWidget {
             left: 0,
             bottom: 0,
             child: CustomContainer(
+              onTap: () => Navigator.pushNamed(
+                  context, Routes.movieDetailsScreen,
+                  arguments: movie),
               gradient: LinearGradient(
                 colors: [
                   Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
@@ -62,7 +66,7 @@ class UpcomingMovieCard extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     ).withPadding(PaddingValues.p5.pSymmetricV);

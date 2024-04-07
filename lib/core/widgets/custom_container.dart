@@ -95,7 +95,7 @@ class CustomContainer extends StatelessWidget {
                     ? color ?? ColorsManager.primaryColor
                     : Colors.transparent),
         child: onTap == null
-            ? child ?? childWidget(context)
+            ? childWidget(context)
             : Material(
                 color: ColorsManager.transparent,
                 child: InkWell(
@@ -105,7 +105,7 @@ class CustomContainer extends StatelessWidget {
                       : borderRadius?.resolve(TextDirection.ltr) ??
                           BorderValues.b10.borderAll.resolve(TextDirection.ltr),
                   onTap: onTap,
-                  child: child ?? childWidget(context),
+                  child: childWidget(context),
                 ),
               ),
       ),

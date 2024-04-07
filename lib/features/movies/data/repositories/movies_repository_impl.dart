@@ -30,4 +30,21 @@ class MoviesRepositoryImpl implements MoviesRepository {
     }
     return (moviesResponseModel.movies, moviesResponseModel.totalPages ?? 1);
   }
+
+  @override
+  Future<(List<Movie>, int, int)> searchMovie(String query, int page) async {
+    bool isConnected = await _networkInfo.isConnected;
+    late MoviesResponseModel moviesResponseModel;
+    if (isConnected) {
+      moviesResponseModel =
+          await _moviesRemoteDataSource.searchMovie(query, page);
+    } else {
+      moviesResponseModel = await _moviesLocaleDataSource.searchMovie(query);
+    }
+    return (
+      moviesResponseModel.movies,
+      moviesResponseModel.totalPages ?? 1,
+      moviesResponseModel.totalResults
+    );
+  }
 }

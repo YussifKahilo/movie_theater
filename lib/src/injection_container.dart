@@ -9,6 +9,7 @@ import 'package:movie_theater/features/movies/data/datasources/movies_remote_dat
 import 'package:movie_theater/features/movies/data/repositories/movies_repository_impl.dart';
 import 'package:movie_theater/features/movies/domain/repositories/movies_repository.dart';
 import 'package:movie_theater/features/movies/domain/usecases/get_movies_usecase.dart';
+import 'package:movie_theater/features/search/domain/usecases/search_movie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/api/api_consumer.dart';
@@ -77,6 +78,9 @@ Future<void> initMoviesModule() async {
   //?Use cases
   diInstance.registerLazySingleton<GetMoviesUsecase>(
       () => GetMoviesUsecase(diInstance()));
+  //?Search Usecase
+  diInstance.registerLazySingleton<SearchMovieUsecase>(
+      () => SearchMovieUsecase(diInstance()));
 
   //?Repositories
   diInstance.registerLazySingleton<MoviesRepository>(

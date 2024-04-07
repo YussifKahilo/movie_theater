@@ -68,7 +68,7 @@ class CustomImage extends StatelessWidget {
               fit: fit ?? BoxFit.fill,
             )
           : CachedNetworkImage(
-              imageUrl: '${basePath ?? ''}${imageUrl!}',
+              imageUrl: '${basePath ?? ''}$imageUrl',
               height: height,
               width: width,
               fit: fit ?? BoxFit.fill,
@@ -85,8 +85,8 @@ class CustomImage extends StatelessWidget {
                 );
               },
               errorWidget: (context, url, error) {
-                return Image.asset(
-                  AssetsManager.placeholder,
+                return SvgPicture.asset(
+                  AssetsManager.movieIcon,
                   height: height,
                   width: width,
                   fit: fit ?? BoxFit.fill,

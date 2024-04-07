@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_theater/core/cubit/custom_cubit.dart';
 import 'package:movie_theater/core/extensions/animations_manager.dart';
@@ -13,6 +14,9 @@ import 'package:movie_theater/core/manager/color_manager.dart';
 import 'package:movie_theater/core/manager/values_manager.dart';
 import 'package:movie_theater/core/widgets/custom_container.dart';
 import 'package:movie_theater/core/widgets/custom_svg.dart';
+
+import '../../../../manager/assets_manager.dart';
+import '../../../theme/presentation/widget/theme_button.dart';
 
 class MainLayoutScreen extends StatelessWidget {
   MainLayoutScreen({
@@ -51,11 +55,31 @@ class MainLayoutScreen extends StatelessWidget {
         child: Scaffold(
           body: Stack(
             children: [
-              PageView.builder(
-                itemCount: pages.length,
-                controller: _pageController,
-                itemBuilder: _pageItemBuilder,
-                physics: const NeverScrollableScrollPhysics(),
+              Column(
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().statusBarHeight,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomSvg(
+                        AssetsManager.appIcon,
+                        size: AppSize.s50,
+                        color: ColorsManager.primaryColor,
+                      ).animateSlideFade(1),
+                      ThemeButton().animateSlideFade(3)
+                    ],
+                  ).withPadding(PaddingValues.p16.pSymmetricVH),
+                  Expanded(
+                    child: PageView.builder(
+                      itemCount: pages.length,
+                      controller: _pageController,
+                      itemBuilder: _pageItemBuilder,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
+                  ),
+                ],
               ),
               Positioned(
                 bottom: 0,
@@ -107,6 +131,7 @@ class MainLayoutScreen extends StatelessWidget {
                                 children: List.generate(
                                     icons.length,
                                     (index) => CustomContainer(
+                                        padding: PaddingValues.p5.pSymmetricVH,
                                         onTap: () => _onBottomNavItemSelected(
                                             index, context),
                                         transparentButton: true,
@@ -117,13 +142,13 @@ class MainLayoutScreen extends StatelessWidget {
                           AnimatedPositioned(
                             duration: DurationValues.dm250.milliseconds,
                             left: selectedIndex == 0
-                                ? AppSize.s1_5.rw
+                                ? AppSize.s8.rw
                                 : selectedIndex == 1
                                     ? (AppSize.s100 + AppSize.s16 + AppSize.s3)
                                         .rw
                                     : ((AppSize.s100 +
-                                                AppSize.s16 +
-                                                AppSize.s2) *
+                                                AppSize.s14 +
+                                                AppSize.s1_5) *
                                             2)
                                         .rw,
                             child: Column(

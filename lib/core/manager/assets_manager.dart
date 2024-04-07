@@ -21,4 +21,7 @@ class AssetsManager {
   static const String heartIcon = '$svgPath/heart.svg';
   static const String homeIcon = '$svgPath/home.svg';
   static const String searchIcon = '$svgPath/search.svg';
+
+  static const String noResults = '$svgPath/no results.svg';
+  static const String movieIcon = '$svgPath/movie.svg';
 }

@@ -3,8 +3,8 @@ import 'package:movie_theater/features/movies/domain/entities/production_company
 enum MovieSection { upComing, topRated }
 
 class Movie {
-  final String backDropImagePath;
-  final String posterPath;
+  final String? backDropImagePath;
+  final String? posterPath;
   final int id;
   final String title;
   final String overview;

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -114,7 +112,6 @@ class DioConsumer implements ApiConsumer {
   }
 
   dynamic _handelDioError(DioException error) {
-    log(error.type.toString());
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:

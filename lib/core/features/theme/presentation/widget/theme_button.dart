@@ -34,7 +34,7 @@ class ThemeButton extends StatelessWidget {
             },
             shape: BoxShape.circle,
             child: CustomSvg(
-              state == ThemeMode.dark
+              state != ThemeMode.dark
                   ? AssetsManager.darkThemeIcon
                   : AssetsManager.lightThemeIcon,
               color: iconColor,

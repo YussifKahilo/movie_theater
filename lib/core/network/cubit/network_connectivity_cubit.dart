@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:movie_theater/core/extensions/print_extension.dart';
 
 class NetworkConnectivityCubit extends Cubit<bool> {
   StreamSubscription? _subscription;
@@ -14,7 +13,6 @@ class NetworkConnectivityCubit extends Cubit<bool> {
     _subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
-      (result).dLog();
       emit(result == ConnectivityResult.wifi ||
           result == ConnectivityResult.mobile);
     });
