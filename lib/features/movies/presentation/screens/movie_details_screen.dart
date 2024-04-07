@@ -28,6 +28,7 @@ import '../../../../core/manager/strings_manager.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../../../../core/widgets/custom_image.dart';
 import '../../domain/entities/movie.dart';
+import '../widgets/movie_grid_card.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   const MovieDetailsScreen({
@@ -55,6 +56,45 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            top: 0,
+            child: widget.movie.backDropImagePath == null
+                ? const SizedBox()
+                : CustomImage(
+                    borderRadius: BorderRadius.zero,
+                    basePath: StringsManager.imageBasePath,
+                    imageUrl: widget.movie.posterPath.toString(),
+                  ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: CustomContainer(
+              borderRadius: BorderRadius.zero,
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).scaffoldBackgroundColor,
+                  Theme.of(context).scaffoldBackgroundColor,
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                  Theme.of(context).scaffoldBackgroundColor,
+                  Theme.of(context).scaffoldBackgroundColor,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              child: const SizedBox(),
+            ),
+          ),
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
@@ -63,138 +103,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 SizedBox(
                   height: ScreenUtil().statusBarHeight,
                 ),
-                Stack(
-                  children: [
-                    SizedBox(
-                      height: (ScreenUtil().screenHeight / 4) + AppSize.s100.rh,
-                      width: double.infinity,
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: AppSize.s100.rh,
-                      top: 0,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            top: 0,
-                            child: widget.movie.backDropImagePath == null
-                                ? const SizedBox()
-                                : CustomImage(
-                                    borderRadius: BorderRadius.zero,
-                                    basePath: StringsManager.imageBasePath,
-                                    imageUrl: widget.movie.backDropImagePath,
-                                  ),
-                          ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            left: 0,
-                            bottom: 0,
-                            child: CustomContainer(
-                              borderRadius: BorderRadius.zero,
-                              gradient: LinearGradient(
-                                colors: [
-                                  Theme.of(context).scaffoldBackgroundColor,
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.9),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.6),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.2),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.2),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.6),
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.9),
-                                  Theme.of(context).scaffoldBackgroundColor,
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                              child: const SizedBox(),
-                            ),
-                          ),
-                        ],
-                      ).animateSlideFade(2,
-                          animationDirection: AnimationDirection.tTb),
-                    ),
-                    Positioned(
-                        top: AppSize.s80.rh,
-                        bottom: 0,
-                        right: ScreenUtil().screenWidth / 3.5,
-                        left: ScreenUtil().screenWidth / 3.5,
-                        child: CustomContainer(
-                          haveShadows: true,
-                          shadowColor: ColorsManager.blackColor,
-                          color: ColorsManager.transparent,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                left: 0,
-                                bottom: 0,
-                                child: CustomImage(
-                                  basePath: StringsManager.imageBasePath,
-                                  imageUrl: widget.movie.posterPath,
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                left: 0,
-                                bottom: 0,
-                                child: CustomContainer(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .withOpacity(0.4),
-                                      Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .withOpacity(0),
-                                      Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .withOpacity(0),
-                                      Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .withOpacity(0.2),
-                                      Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .withOpacity(0.6),
-                                      Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .withOpacity(0.9),
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                  child: const SizedBox(),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                            .withPadding(PaddingValues.p5.pSymmetricV)
-                            .animateSlideFade(3,
-                                animationDirection: AnimationDirection.tTb)),
-                  ],
-                ),
+                MovieGridCard(
+                  clickAble: false,
+                  movie: widget.movie,
+                  imageUrl: widget.movie.backDropImagePath.toString(),
+                )
+                    .withPadding(
+                        (PaddingValues.p80, PaddingValues.p30).pTopHorizontal)
+                    .animateSlideFade(3,
+                        animationDirection: AnimationDirection.tTb),
                 AppSize.s16.spaceH,
                 Align(
                   alignment: Alignment.center,
@@ -317,9 +234,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if (state.movie.tagline != null)
+                              if (state.movie.tagline != null &&
+                                  state.movie.tagline!.isNotEmpty)
                                 CustomText(
-                                  state.movie.tagline!,
+                                  '"${state.movie.tagline!}"',
                                   textStyle:
                                       ThemesManager.getDisplayLargeTextStyle(
                                           context),
@@ -487,10 +405,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               child: Column(
                                 children: [
                                   AppSize.s10.spaceH,
-                                  CustomText('View Movie',
-                                      textStyle:
-                                          ThemesManager.getTitleSmallTextStyle(
-                                              context)),
+                                  CustomText(
+                                    'View Movie',
+                                    textStyle:
+                                        ThemesManager.getTitleSmallTextStyle(
+                                            context),
+                                    color: ColorsManager.whiteColor,
+                                  ),
                                   SizedBox(
                                     height: ScreenUtil().bottomBarHeight,
                                   )

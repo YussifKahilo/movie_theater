@@ -17,13 +17,13 @@ class MoviesRepositoryImpl implements MoviesRepository {
 
   @override
   Future<(List<Movie>, int)> getMoviesList(
-      MovieSection movieSection, bool cacheData) async {
+      int page, MovieSection movieSection, bool cacheData) async {
     bool isConnected = await _networkInfo.isConnected;
     late MoviesResponseModel moviesResponseModel;
     if (isConnected) {
       _moviesLocaleDataSource.clearSavedMovies();
       moviesResponseModel =
-          await _moviesRemoteDataSource.getMoviesList(movieSection);
+          await _moviesRemoteDataSource.getMoviesList(page, movieSection);
       if (cacheData) {
         await _moviesLocaleDataSource.saveMovies(
             moviesResponseModel.movies, movieSection);

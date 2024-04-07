@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_theater/features/layout/presentation/screen/layout_screen.dart';
 import 'package:movie_theater/features/movies/domain/entities/movie.dart';
+import 'package:movie_theater/features/movies/presentation/screens/movies_list_screen.dart';
 import '../../core/features/splash/presentation/screens/splash_screen.dart';
 import '../../features/movies/presentation/screens/movie_details_screen.dart';
 import '/config/routes/routes.dart';
@@ -25,6 +26,11 @@ class RoutesManager {
         screen = MovieDetailsScreen(
           movie: (settings.arguments as (Movie, bool)).$1,
           cacheData: (settings.arguments as (Movie, bool)).$2,
+        );
+        break;
+      case Routes.moviesListScreen:
+        screen = MoviesListScreen(
+          movieSection: settings.arguments as MovieSection,
         );
         break;
       default:

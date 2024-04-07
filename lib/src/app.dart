@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_theater/features/movies/presentation/cubit/movies_cubit.dart';
@@ -49,16 +50,22 @@ class MyApp extends StatelessWidget {
             },
             child: Builder(builder: (context) {
               final themeState = context.watch<ThemeCubit>().state;
-
-              return MaterialApp(
-                darkTheme: Themes.getDarkTheme(),
-                theme: Themes.getLightTheme(),
-                themeMode: themeState,
-                debugShowCheckedModeBanner: false,
-                title: StringsManager.appName,
-                navigatorKey: navigatorKey,
-                initialRoute: Routes.splashScreen,
-                onGenerateRoute: RoutesManager.generateRoute,
+              final SystemUiOverlayStyle overlayStyle =
+                  themeState == ThemeMode.dark
+                      ? SystemUiOverlayStyle.light
+                      : SystemUiOverlayStyle.dark;
+              return AnnotatedRegion<SystemUiOverlayStyle>(
+                value: overlayStyle,
+                child: MaterialApp(
+                  darkTheme: Themes.getDarkTheme(),
+                  theme: Themes.getLightTheme(),
+                  themeMode: themeState,
+                  debugShowCheckedModeBanner: false,
+                  title: StringsManager.appName,
+                  navigatorKey: navigatorKey,
+                  initialRoute: Routes.splashScreen,
+                  onGenerateRoute: RoutesManager.generateRoute,
+                ),
               );
             })),
       ),

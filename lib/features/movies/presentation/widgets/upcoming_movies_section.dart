@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_theater/core/cubit/custom_cubit.dart';
+import 'package:movie_theater/core/extensions/padding_manager.dart';
 import 'package:movie_theater/core/extensions/responsive_manager.dart';
 import 'package:movie_theater/core/manager/strings_manager.dart';
+import 'package:movie_theater/core/manager/values_manager.dart';
 import 'package:movie_theater/core/widgets/custom_image.dart';
-import 'package:movie_theater/features/movies/presentation/widgets/upcoming_movie_card.dart';
-
+import 'package:movie_theater/features/movies/presentation/widgets/movie_grid_card.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../../domain/entities/movie.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -93,9 +94,11 @@ class UpcomingMoviesSection extends StatelessWidget {
                 CustomCubit.get<int>(context).changeState(value);
               },
               scale: 0.25.rs,
-              itemBuilder: (context, index) => UpcomingMovieCard(
+              itemBuilder: (context, index) => MovieGridCard(
+                clickAble: true,
                 movie: movies[index],
-              ),
+                cacheData: true,
+              ).withPadding(PaddingValues.p10.pSymmetricV),
             );
           }),
         ],

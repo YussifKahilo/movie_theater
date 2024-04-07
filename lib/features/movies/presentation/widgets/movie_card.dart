@@ -36,142 +36,138 @@ class MovieCard extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           if (movie.backDropImagePath != null)
-            CustomImage(
-              basePath: StringsManager.imageBasePath,
-              imageUrl: movie.backDropImagePath.toString(),
-              height: AppSize.s140.rh,
-            )
-          else
-            SizedBox(
-              height: AppSize.s140.rh,
-            ),
-          Positioned(
+            Positioned(
               top: 0,
-              left: 0,
-              right: 0,
               bottom: 0,
-              child: CustomContainer(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).scaffoldBackgroundColor,
-                    Theme.of(context).scaffoldBackgroundColor,
-                    Theme.of(context).scaffoldBackgroundColor,
-                    Theme.of(context).scaffoldBackgroundColor,
-                    Theme.of(context).scaffoldBackgroundColor,
-                    Theme.of(context).scaffoldBackgroundColor,
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                    Theme.of(context).scaffoldBackgroundColor,
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                onTap: () => Navigator.pushNamed(
-                    context, Routes.movieDetailsScreen,
-                    arguments: (movie, cacheData)),
-                child: Row(
-                  children: [
-                    CustomContainer(
-                      color: ColorsManager.transparent,
-                      shadowColor: ColorsManager.blackColor,
-                      haveShadows: true,
-                      child: Stack(
-                        children: [
-                          CustomImage(
-                            basePath: StringsManager.imageBasePath,
-                            imageUrl: movie.posterPath.toString(),
-                            width: AppSize.s100.rw,
-                          ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            left: 0,
-                            bottom: 0,
-                            child: CustomContainer(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0.4),
-                                    Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0),
-                                    Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0),
-                                    Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0.2),
-                                    Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0.6),
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                child: const SizedBox()),
-                          )
-                        ],
-                      ),
+              child: CustomImage(
+                basePath: StringsManager.imageBasePath,
+                imageUrl: movie.backDropImagePath.toString(),
+              ),
+            ),
+          CustomContainer(
+            width: double.infinity,
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+                Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                Theme.of(context).scaffoldBackgroundColor,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            onTap: () => Navigator.pushNamed(context, Routes.movieDetailsScreen,
+                arguments: (movie, cacheData)),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  CustomContainer(
+                    color: ColorsManager.transparent,
+                    shadowColor: ColorsManager.blackColor,
+                    haveShadows: true,
+                    child: Stack(
+                      children: [
+                        CustomImage(
+                          height: (AppSize.s120 + AppSize.s5).rh,
+                          basePath: StringsManager.imageBasePath,
+                          imageUrl: movie.posterPath.toString(),
+                          width: AppSize.s100.rw,
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          left: 0,
+                          bottom: 0,
+                          child: CustomContainer(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(0.4),
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(0),
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(0),
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(0.2),
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(0.6),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              child: const SizedBox()),
+                        )
+                      ],
                     ),
-                    AppSize.s10.spaceW,
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  AppSize.s10.spaceW,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              movie.title,
+                              textAlign: TextAlign.start,
+                              textStyle:
+                                  ThemesManager.getBodySmallTextStyle(context)
+                                      .copyWith(
+                                          fontWeight: FontWeightManager.medium),
+                            ),
+                            CustomText(
+                              movie.releaseDate,
+                              fontWeight: FontWeightManager.medium,
+                              textStyle: ThemesManager.getDisplayLargeTextStyle(
+                                      context)
+                                  .copyWith(),
+                            ),
+                          ],
+                        ),
+                        AppSize.s20.spaceH,
+                        CustomContainer(
+                          haveShadows: true,
+                          color: ColorsManager.greyColor,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              CustomText(
-                                movie.title,
-                                textAlign: TextAlign.start,
-                                textStyle:
-                                    ThemesManager.getBodySmallTextStyle(context)
-                                        .copyWith(
-                                            fontWeight:
-                                                FontWeightManager.medium),
+                              const Icon(
+                                Icons.star_rate_rounded,
+                                color: ColorsManager.yellowColor,
                               ),
                               CustomText(
-                                movie.releaseDate,
-                                fontWeight: FontWeightManager.medium,
+                                '${movie.voteAverage.toStringAsFixed(1)} | ${movie.voteCount.toString()} votes',
+                                color: ColorsManager.whiteColor,
+                                fontWeight: FontWeightManager.regular,
                                 textStyle:
-                                    ThemesManager.getDisplayLargeTextStyle(
+                                    ThemesManager.getDisplayMediumTextStyle(
                                             context)
                                         .copyWith(),
-                              ),
+                              )
                             ],
-                          ),
-                          CustomContainer(
-                            haveShadows: true,
-                            color: ColorsManager.greyColor,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.star_rate_rounded,
-                                  color: ColorsManager.yellowColor,
-                                ),
-                                CustomText(
-                                  '${movie.voteAverage.toStringAsFixed(1)} | ${movie.voteCount.toString()} votes',
-                                  color: ColorsManager.whiteColor,
-                                  fontWeight: FontWeightManager.regular,
-                                  textStyle:
-                                      ThemesManager.getDisplayMediumTextStyle(
-                                              context)
-                                          .copyWith(),
-                                )
-                              ],
-                            ).withPadding(PaddingValues.p2.pSymmetricVH),
-                          )
-                        ],
-                      ).withPadding(PaddingValues.p2.pSymmetricV),
-                    )
-                  ],
-                ).withPadding(PaddingValues.p15.pSymmetricVH),
-              ))
+                          ).withPadding(PaddingValues.p2.pSymmetricVH),
+                        )
+                      ],
+                    ).withPadding(PaddingValues.p2.pSymmetricV),
+                  )
+                ],
+              ).withPadding(PaddingValues.p15.pSymmetricVH),
+            ),
+          )
         ],
       ),
     );

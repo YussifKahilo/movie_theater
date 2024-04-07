@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_theater/core/manager/fonts_manager.dart';
 import '/core/manager/values_manager.dart';
 import '../../core/manager/color_manager.dart';
@@ -7,11 +8,13 @@ import '../../core/extensions/responsive_manager.dart';
 class Themes {
   static AppBarTheme _appBarTheme(ThemeData themeData) {
     return AppBarTheme(
-      backgroundColor: ColorsManager.transparent,
-      actionsIconTheme: themeData.iconTheme,
-      elevation: 0,
-      iconTheme: themeData.iconTheme,
-    );
+        backgroundColor: ColorsManager.transparent,
+        actionsIconTheme: themeData.iconTheme,
+        elevation: 0,
+        iconTheme: themeData.iconTheme,
+        systemOverlayStyle: themeData == ThemeData.dark()
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark);
   }
 
   static InputBorder _customBorder(Color color) {

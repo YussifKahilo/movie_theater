@@ -1,24 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
-import 'package:movie_theater/core/manager/fonts_manager.dart';
-import 'package:movie_theater/core/manager/strings_manager.dart';
-import 'package:movie_theater/core/widgets/custom_image.dart';
-import 'package:movie_theater/features/movies/domain/entities/movie.dart';
+import 'package:movie_theater/core/extensions/responsive_manager.dart';
+
 import '../../../../config/routes/routes.dart';
 import '../../../../core/manager/color_manager.dart';
+import '../../../../core/manager/fonts_manager.dart';
+import '../../../../core/manager/strings_manager.dart';
 import '../../../../core/manager/values_manager.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../../../../core/widgets/custom_image.dart';
 import '../../../../core/widgets/custom_text.dart';
+import '../../domain/entities/movie.dart';
 
-class UpcomingMovieCard extends StatelessWidget {
-  const UpcomingMovieCard({
-    Key? key,
-    required this.movie,
-  }) : super(key: key);
+class MovieGridCard extends StatelessWidget {
+  const MovieGridCard(
+      {Key? key,
+      required this.clickAble,
+      required this.movie,
+      this.imageUrl,
+      this.cacheData})
+      : super(key: key);
+
+  final bool clickAble;
   final Movie movie;
+  final bool? cacheData;
+  final String? imageUrl;
+
   @override
   Widget build(BuildContext context) {
+    if (clickAble && cacheData == null) {
+      throw Exception(
+          'You have to set to cache data or not when making the widget clickable');
+    }
     return CustomContainer(
+      height: AppSize.s250.rh,
       haveShadows: true,
       shadowColor: ColorsManager.blackColor,
       color: ColorsManager.transparent,
@@ -31,7 +46,7 @@ class UpcomingMovieCard extends StatelessWidget {
             bottom: 0,
             child: CustomImage(
               basePath: StringsManager.imageBasePath,
-              imageUrl: movie.posterPath,
+              imageUrl: imageUrl ?? movie.posterPath.toString(),
             ),
           ),
           Positioned(
@@ -40,9 +55,11 @@ class UpcomingMovieCard extends StatelessWidget {
             left: 0,
             bottom: 0,
             child: CustomContainer(
-              onTap: () => Navigator.pushNamed(
-                  context, Routes.movieDetailsScreen,
-                  arguments: (movie, true)),
+              onTap: clickAble
+                  ? () => Navigator.pushNamed(
+                      context, Routes.movieDetailsScreen,
+                      arguments: (movie, cacheData!))
+                  : null,
               gradient: LinearGradient(
                 colors: [
                   Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
@@ -56,19 +73,21 @@ class UpcomingMovieCard extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomText(
-                    movie.title,
-                    fontWeight: FontWeightManager.medium,
-                  ).withPadding(PaddingValues.p10.pSymmetricVH)
-                ],
-              ),
+              child: clickAble
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomText(
+                          movie.title,
+                          fontWeight: FontWeightManager.medium,
+                        ).withPadding(PaddingValues.p10.pSymmetricVH)
+                      ],
+                    )
+                  : const SizedBox(),
             ),
           ),
         ],
       ),
-    ).withPadding(PaddingValues.p5.pSymmetricV);
+    );
   }
 }

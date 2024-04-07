@@ -6,15 +6,15 @@ import 'package:movie_theater/features/movies/domain/entities/movie.dart';
 import 'package:movie_theater/features/movies/domain/repositories/movies_repository.dart';
 
 class GetMoviesUsecase extends BaseUseCase<(List<Movie> movies, int totalPages),
-    (MovieSection, bool)> {
+    (int, MovieSection, bool)> {
   final MoviesRepository _moviesRepository;
 
   GetMoviesUsecase(this._moviesRepository);
   @override
   Future<Either<Failure, (List<Movie>, int)>> call(
-          (MovieSection, bool) params) async =>
+          (int, MovieSection, bool) params) async =>
       await tryCatch(
         tryFunction: () =>
-            _moviesRepository.getMoviesList(params.$1, params.$2),
+            _moviesRepository.getMoviesList(params.$1, params.$2, params.$3),
       );
 }

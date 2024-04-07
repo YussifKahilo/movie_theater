@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:movie_theater/config/routes/routes.dart';
 import 'package:movie_theater/config/theme/themes_manager.dart';
 import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/widgets/custom_container.dart';
+import 'package:movie_theater/features/movies/domain/entities/movie.dart';
 import 'package:movie_theater/features/movies/presentation/widgets/movie_card.dart';
 import 'package:movie_theater/features/movies/presentation/widgets/movie_card_loading.dart';
 import 'package:movie_theater/features/movies/presentation/widgets/upcoming_movies_section_loading.dart';
@@ -29,8 +31,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    MoviesCubit.get(context).getMoviesUpComingMoviesList(true);
-    MoviesCubit.get(context).getMoviesTopRatedMoviesList(true);
+    MoviesCubit.get(context).getMoviesUpComingMoviesList();
+    MoviesCubit.get(context).getMoviesTopRatedMoviesList();
     super.initState();
   }
 
@@ -40,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: RefreshIndicator(
         color: ColorsManager.primaryColor,
         onRefresh: () async {
-          MoviesCubit.get(context).getMoviesUpComingMoviesList(true);
-          MoviesCubit.get(context).getMoviesTopRatedMoviesList(true);
+          MoviesCubit.get(context).getMoviesUpComingMoviesList();
+          MoviesCubit.get(context).getMoviesTopRatedMoviesList();
         },
         child: SingleChildScrollView(
           padding:
@@ -60,7 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     transparentButton: true,
                     textStyle: ThemesManager.getDisplayLargeTextStyle(context),
                     text: 'View more',
-                    onTap: () {},
+                    onTap: () => Navigator.pushNamed(
+                        context, Routes.moviesListScreen,
+                        arguments: MovieSection.upComing),
                   )
                 ],
               )
@@ -82,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (state is GetUpComingMoviesListFailedState) {
                             return CustomErrorWidget(
                               onTap: () => MoviesCubit.get(context)
-                                  .getMoviesUpComingMoviesList(true),
+                                  .getMoviesUpComingMoviesList(),
                               error: state.message,
                             );
                           } else if (state
@@ -119,7 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     transparentButton: true,
                     text: 'View more',
                     textStyle: ThemesManager.getDisplayLargeTextStyle(context),
-                    onTap: () {},
+                    onTap: () => Navigator.pushNamed(
+                        context, Routes.moviesListScreen,
+                        arguments: MovieSection.topRated),
                   )
                 ],
               )
@@ -135,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state is GetTopRatedMoviesListFailedState) {
                     return CustomErrorWidget(
                       onTap: () => MoviesCubit.get(context)
-                          .getMoviesTopRatedMoviesList(true),
+                          .getMoviesTopRatedMoviesList(),
                       error: state.message,
                     );
                   } else if (state is GetTopRatedMoviesListSuccessState) {

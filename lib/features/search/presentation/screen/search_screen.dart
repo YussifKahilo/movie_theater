@@ -11,11 +11,12 @@ import 'package:movie_theater/core/manager/color_manager.dart';
 import 'package:movie_theater/core/manager/values_manager.dart';
 import 'package:movie_theater/core/widgets/custom_text.dart';
 import 'package:movie_theater/core/widgets/custom_text_field.dart';
-import 'package:movie_theater/core/widgets/pagination_screen.dart';
+import 'package:movie_theater/core/widgets/pagination.dart';
 import 'package:movie_theater/features/search/presentation/cubit/search_cubit.dart';
 import 'package:movie_theater/features/search/presentation/widgets/no_results_widget.dart';
 import 'package:movie_theater/features/search/presentation/widgets/start_search_widget.dart';
 import 'package:movie_theater/src/injection_container.dart';
+import '../../../movies/domain/entities/movie.dart';
 import '../../../movies/presentation/widgets/movie_card.dart';
 import '../../../movies/presentation/widgets/movie_card_loading.dart';
 
@@ -24,6 +25,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int page = 1;
     final TextEditingController searchController = TextEditingController();
     return BlocProvider(
         create: (context) => SearchCubit(diInstance()),
@@ -44,8 +46,19 @@ class SearchScreen extends StatelessWidget {
                 builder: (context, state) {
                   if (state is SearchInitial || searchController.text.isEmpty) {
                     return const StartSearchWidget();
-                  } else if (state is SearchSuccessState) {
-                    if (state.movies.isEmpty) {
+                  } else if (state is SearchSuccessState ||
+                      state is MoreSearchSuccessState) {
+                    final List<Movie> movies = state is SearchSuccessState
+                        ? state.movies
+                        : (state as MoreSearchSuccessState).movies;
+                    int totalPages = state is SearchSuccessState
+                        ? state.totalPages
+                        : (state as MoreSearchSuccessState).totalPages;
+                    int totalResults = state is SearchSuccessState
+                        ? state.totalResults
+                        : (state as MoreSearchSuccessState).totalPages;
+
+                    if (movies.isEmpty) {
                       return NoResultsWidget(
                         title: searchController.text.trim(),
                       );
@@ -68,13 +81,14 @@ class SearchScreen extends StatelessWidget {
                                 const CustomText('"'),
                               ],
                             ),
-                            CustomText(state.totalResults.toString()),
+                            CustomText(totalResults.toString()),
                           ],
                         ).withPadding((PaddingValues.p10, PaddingValues.p16)
                             .pSymmetricVH),
                         Expanded(
                             child: AnimationLimiter(
                           child: PaginationList(
+                            page: page,
                             padding: (
                               PaddingValues.p16,
                               PaddingValues.p10,
@@ -82,16 +96,16 @@ class SearchScreen extends StatelessWidget {
                               (PaddingValues.p80 + ScreenUtil().bottomBarHeight)
                             )
                                 .pOnlyStartTopEndBottom,
-                            dataLength: state.movies.length,
-                            maxPages: state.totalPages,
-                            loadMoreData: (nextPage) {
+                            dataLength: movies.length,
+                            maxPages: totalPages,
+                            loadMoreData: () {
                               SearchCubit.get(context).searchFor(
-                                  searchController.text.trim(), nextPage);
+                                  searchController.text.trim(), ++page);
                             },
                             separator: AppSize.s30,
-                            widgetBuilder: (index) {
+                            widgetBuilder: (int index) {
                               return MovieCard(
-                                movie: state.movies[index],
+                                movie: movies[index],
                                 cacheData: false,
                               ).animateSlideFade(index);
                             },

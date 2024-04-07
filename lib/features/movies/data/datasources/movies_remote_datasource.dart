@@ -7,7 +7,8 @@ import 'package:movie_theater/features/movies/data/models/movies_response_model.
 import 'package:movie_theater/features/movies/domain/entities/movie.dart';
 
 abstract class MoviesRemoteDataSource {
-  Future<MoviesResponseModel> getMoviesList(MovieSection movieSection);
+  Future<MoviesResponseModel> getMoviesList(
+      int page, MovieSection movieSection);
   Future<MovieModel> getMovie(int id);
   Future<MoviesResponseModel> searchMovie(String query, int page);
 }
@@ -17,12 +18,14 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
 
   MoviesRemoteDataSourceImpl(this._apiConsumer);
   @override
-  Future<MoviesResponseModel> getMoviesList(MovieSection movieSection) async {
+  Future<MoviesResponseModel> getMoviesList(
+      int page, MovieSection movieSection) async {
     final response = await _apiConsumer.getData(
         url: switch (movieSection) {
-      MovieSection.topRated => EndPoints.topRatedMovies,
-      MovieSection.upComing || _ => EndPoints.upComing
-    });
+          MovieSection.topRated => EndPoints.topRatedMovies,
+          MovieSection.upComing || _ => EndPoints.upComing
+        },
+        query: {'page': page});
 
     return MoviesResponseModel.fromMap(response.data);
   }
