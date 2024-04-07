@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:movie_theater/core/usecases/try_catch.dart';
 import '/core/errors/failure.dart';
 import '/core/usecases/base_usecase.dart';
 import '/features/auth/domain/entities/login_inputs.dart';
@@ -10,12 +11,6 @@ class LoginUsecase extends BaseUseCase<String, LoginInputs> {
   LoginUsecase(this._authRepository);
 
   @override
-  Future<Either<Failure, String>> call(LoginInputs params) async {
-    try {
-      final result = await _authRepository.login(params);
-      return Right(result);
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
+  Future<Either<Failure, String>> call(LoginInputs params) async =>
+      await tryCatch(tryFunction: () => _authRepository.login(params));
 }

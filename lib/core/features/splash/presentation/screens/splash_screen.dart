@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
 
   void _navigateToNextScreen() =>
-      Navigator.pushNamed(context, Routes.layoutScreen);
+      Navigator.pushReplacementNamed(context, Routes.layoutScreen);
 
   void _startDelay() {
     _timer = Timer(const Duration(seconds: Values.splashDurationSeconds), () {
@@ -46,6 +46,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) =>
+          current is GetUserFailedState || current is GetUserSuccessState,
       listener: (context, state) {
         if (state is GetUserSuccessState) {
           //TODO: get favorites list

@@ -26,6 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
       UserModel userModel;
       if (sessionId != null) {
         userModel = await _authRemoteDatasource.getUser(sessionId);
+        await _authLocalDatasource.saveSessionId(sessionId);
       } else {
         String? savedSessionId = await _authLocalDatasource.getSessionId();
         if (savedSessionId != null) {

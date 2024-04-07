@@ -1,10 +1,8 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_theater/core/widgets/custom_back_button.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -435,38 +433,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           Positioned(
             left: PaddingValues.p16.rw,
             top: PaddingValues.p16.rh + ScreenUtil().statusBarHeight,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: ClipRRect(
-                    borderRadius: BorderValues.b15.borderAll,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                      child: const SizedBox(),
-                    ),
-                  ),
-                ),
-                CustomContainer(
-                  onTap: () => Navigator.pop(context),
-                  padding: PaddingValues.p10.pAll,
-                  isFilled: false,
-                  color: Theme.of(context).iconTheme.color,
-                  child: Stack(
-                    children: [
-                      Icon(
-                        Platform.isAndroid
-                            ? Icons.arrow_back
-                            : Icons.arrow_back_ios_new,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ).animateSlideFade(2),
+            child: const CustomBackButton().animateSlideFade(2),
           ),
         ],
       ),

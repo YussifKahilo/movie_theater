@@ -1,3 +1,5 @@
+import 'package:movie_theater/core/usecases/try_catch.dart';
+
 import '/features/auth/domain/entities/user.dart';
 import 'package:dartz/dartz.dart';
 import '/core/errors/failure.dart';
@@ -10,12 +12,6 @@ class GetUserUsecase extends BaseUseCase<User, String?> {
   GetUserUsecase(this._authRepository);
 
   @override
-  Future<Either<Failure, User>> call(String? params) async {
-    try {
-      final result = await _authRepository.getUser(params);
-      return Right(result);
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
+  Future<Either<Failure, User>> call(String? params) async =>
+      await tryCatch(tryFunction: () => _authRepository.getUser(params));
 }

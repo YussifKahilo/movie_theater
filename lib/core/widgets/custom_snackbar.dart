@@ -16,7 +16,6 @@ void showSnackBar(
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
-    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
     content: AwesomeSnackbarContent(
       title: title ?? defTitle,
       message: content,
