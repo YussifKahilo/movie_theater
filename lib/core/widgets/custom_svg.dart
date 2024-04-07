@@ -7,7 +7,9 @@ class CustomSvg extends StatelessWidget {
   final String path;
   final num? size;
   final Color? color;
-  const CustomSvg(this.path, {super.key, this.size, this.color});
+  final bool useColor;
+  const CustomSvg(this.path,
+      {super.key, this.size, this.color, this.useColor = true});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class CustomSvg extends StatelessWidget {
       path, width: size?.rc,
       height: size?.rs,
       // ignore: deprecated_member_use
-      color: color ?? Theme.of(context).iconTheme.color,
+      color: useColor ? color ?? Theme.of(context).iconTheme.color : null,
     );
   }
 }

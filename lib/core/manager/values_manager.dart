@@ -1,5 +1,5 @@
 class Values {
-  static const int splashDurationSeconds = 2;
+  static const int splashDurationSeconds = 3;
   static const int toastTime = 5;
   static const int shadowBlur = 5;
   static const int pageViewAnimationDuration = 250;

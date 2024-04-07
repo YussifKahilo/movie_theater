@@ -29,7 +29,12 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: textStyle ??
+      style: textStyle?.copyWith(
+              fontWeight: fontWeight,
+              color: color,
+              fontSize: fontSize?.rf,
+              height: height,
+              overflow: overflow) ??
           ThemesManager.getBodyMediumTextStyle(context).copyWith(
               fontWeight: fontWeight,
               color: color,

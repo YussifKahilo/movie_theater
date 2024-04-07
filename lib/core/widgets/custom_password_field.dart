@@ -62,8 +62,8 @@ class CustomPasswordField extends StatelessWidget {
                   child: CustomContainer(
                     color: ColorsManager.transparent,
                     shape: BoxShape.circle,
-                    onTap: () => BlocProvider.of<CustomCubit>(context)
-                        .changeState(!state),
+                    onTap: () =>
+                        CustomCubit.get<bool>(context).changeState(!state),
                     child: state
                         ? CustomSvg(
                             AssetsManager.eyeClosedIcon,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_theater/core/manager/fonts_manager.dart';
 import '/core/manager/values_manager.dart';
 import '../../core/manager/color_manager.dart';
@@ -7,11 +8,13 @@ import '../../core/extensions/responsive_manager.dart';
 class Themes {
   static AppBarTheme _appBarTheme(ThemeData themeData) {
     return AppBarTheme(
-      backgroundColor: ColorsManager.transparent,
-      actionsIconTheme: themeData.iconTheme,
-      elevation: 0,
-      iconTheme: themeData.iconTheme,
-    );
+        backgroundColor: ColorsManager.transparent,
+        actionsIconTheme: themeData.iconTheme,
+        elevation: 0,
+        iconTheme: themeData.iconTheme,
+        systemOverlayStyle: themeData == ThemeData.dark()
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark);
   }
 
   static InputBorder _customBorder(Color color) {
@@ -127,7 +130,7 @@ class Themes {
         prefixIconColor: ColorsManager.primaryColor,
         suffixIconColor: ColorsManager.primaryColor,
         filled: true,
-        fillColor: ColorsManager.primaryDarkColor,
+        fillColor: ThemeData.dark().scaffoldBackgroundColor,
         errorBorder: _customBorder(ColorsManager.redColor),
         focusedBorder: _customBorder(ColorsManager.primaryColor),
         focusedErrorBorder: _customBorder(ColorsManager.primaryColor),
@@ -156,14 +159,19 @@ class Themes {
             .copyWith(color: color, fontSize: FontSize.f16),
         bodyLarge: FontStyles.getMediumStyle()
             .copyWith(color: color, fontSize: FontSize.f18),
-        titleMedium: FontStyles.getBoldStyle()
-            .copyWith(color: color, fontSize: FontSize.f20),
         titleSmall: FontStyles.getBoldStyle()
+            .copyWith(color: color, fontSize: FontSize.f20),
+        titleMedium: FontStyles.getBoldStyle()
             .copyWith(color: color, fontSize: FontSize.f22),
+        titleLarge: FontStyles.getBoldStyle()
+            .copyWith(color: color, fontSize: FontSize.f24),
       );
 }
 
 class ThemesManager {
+  static TextStyle getTitleLargeTextStyle(context) =>
+      Theme.of(context).textTheme.titleLarge!;
+
   static TextStyle getTitleMediumTextStyle(context) =>
       Theme.of(context).textTheme.titleMedium!;
 

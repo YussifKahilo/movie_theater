@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../manager/strings_manager.dart';
 import '/core/api/api_consumer.dart';
 import '../../src/injection_container.dart' as di;
 import '../errors/exceptions.dart';
@@ -29,7 +31,11 @@ class DioConsumer implements ApiConsumer {
       {required String url, Map<String, dynamic>? query}) async {
     try {
       cancelToken = CancelToken();
-
+      if (query != null) {
+        query.addAll({'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!});
+      } else {
+        query = {'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!};
+      }
       return await dio.get(url,
           queryParameters: query, cancelToken: cancelToken);
     } on DioException catch (e) {
@@ -46,7 +52,11 @@ class DioConsumer implements ApiConsumer {
     required dynamic data,
   }) async {
     cancelToken = CancelToken();
-
+    if (query != null) {
+      query.addAll({'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!});
+    } else {
+      query = {'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!};
+    }
     try {
       return await dio.post(url,
           queryParameters: query, data: data, cancelToken: cancelToken);
@@ -64,7 +74,11 @@ class DioConsumer implements ApiConsumer {
     required Map<String, dynamic> data,
   }) async {
     cancelToken = CancelToken();
-
+    if (query != null) {
+      query.addAll({'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!});
+    } else {
+      query = {'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!};
+    }
     try {
       return await dio.put(url,
           queryParameters: query, data: data, cancelToken: cancelToken);
@@ -81,6 +95,7 @@ class DioConsumer implements ApiConsumer {
     required Map<String, dynamic> data,
   }) async {
     cancelToken = CancelToken();
+    data.addAll({'api_key': dotenv.env[StringsManager.apiKeyEnvKey]!});
 
     try {
       return await dio.patch(url, data: data, cancelToken: cancelToken);
@@ -108,7 +123,9 @@ class DioConsumer implements ApiConsumer {
   }
 
   dynamic _handelDioError(DioException error) {
-    log(error.type.toString());
+    try {
+      log(error.response!.data['status_message'].toString());
+    } catch (e) {}
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
@@ -120,8 +137,7 @@ class DioConsumer implements ApiConsumer {
             throw BadRequestException(error.response!.data['msg']);
           case StatusCode.unauthorized:
           case StatusCode.forbidden:
-            throw const UnauthorizedException(
-                /*error.response!.data['message']*/);
+            throw UnauthorizedException(error.response!.data['status_message']);
           case StatusCode.notFound:
             throw NotFoundException(error.response!.data['msg']);
           case StatusCode.conflict:
