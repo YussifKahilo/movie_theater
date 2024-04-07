@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:movie_theater/config/routes/routes.dart';
+import 'package:movie_theater/core/network/cubit/network_connectivity_cubit.dart';
 import 'package:movie_theater/core/widgets/blurred_background.dart';
 import 'package:movie_theater/core/widgets/custom_back_button.dart';
+import 'package:movie_theater/core/widgets/custom_snackbar.dart';
 import 'package:movie_theater/core/widgets/loading.dart';
 import 'package:movie_theater/core/widgets/toast.dart';
+import 'package:movie_theater/core/widgets/two_selection_dialog.dart';
 import 'package:movie_theater/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,6 +33,7 @@ import 'package:movie_theater/features/movies/presentation/cubit/movies_cubit.da
 import 'package:movie_theater/features/movies/presentation/widgets/movie_details_loading.dart';
 
 import '../../../../core/manager/strings_manager.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../../../../core/widgets/custom_image.dart';
 import '../../domain/entities/movie.dart';
@@ -54,8 +62,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isFav = (FavoritesCubit.get(context).state as GetFavoritesSuccessState)
-        .favoritesContains(widget.movie.id);
+    bool isFav = isUserLoggedIn(context)
+        ? (FavoritesCubit.get(context).state as GetFavoritesSuccessState)
+            .favoritesContains(widget.movie.id)
+        : false;
     return Scaffold(
       body: Stack(
         children: [
@@ -167,6 +177,46 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           onTap: state is MarkMovieFavoriteLoadingState
                               ? null
                               : () {
+                                  if (!NetworkConnectivityCubit.get(context)
+                                      .state) {
+                                    showSnackBar(
+                                        context: context,
+                                        content:
+                                            'You are not connected to internet');
+                                    return;
+                                  }
+                                  if (!isUserLoggedIn(context)) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AnimationLimiter(
+                                        child: TwoSelectionDialog(
+                                          haveShadows: true,
+                                          padding:
+                                              PaddingValues.p10.pSymmetricV,
+                                          title: 'You need to login first',
+                                          firstText: 'Login',
+                                          firstOnTap: () {
+                                            Navigator.pop(context);
+                                            Navigator.pushNamed(
+                                                    context, Routes.loginScreen)
+                                                .then((value) => value != null
+                                                    ? Navigator
+                                                        .pushNamedAndRemoveUntil(
+                                                            context,
+                                                            Routes.layoutScreen,
+                                                            (route) => false)
+                                                    : null);
+                                          },
+                                          secondText: 'Cancel',
+                                          secondOnTap: () =>
+                                              Navigator.pop(context),
+                                        ).animateSlideFade(1,
+                                            animationDirection:
+                                                AnimationDirection.bTt),
+                                      ),
+                                    );
+                                    return;
+                                  }
                                   FavoritesCubit.get(context)
                                       .markFavorites(widget.movie.id, !isFav)
                                       .then((value) => isFav = !isFav);
@@ -384,8 +434,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   ],
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter),
-                              height:
-                                  AppSize.s40.rh + ScreenUtil().bottomBarHeight,
+                              height: AppSize.s40.rh +
+                                  (Platform.isAndroid
+                                      ? PaddingValues.p30.rh
+                                      : ScreenUtil().bottomBarHeight),
                               borderRadius: BorderValues.b15.borderTop,
                               child: Column(
                                 children: [
@@ -397,16 +449,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             context),
                                     color: ColorsManager.whiteColor,
                                   ),
-                                  SizedBox(
-                                    height: ScreenUtil().bottomBarHeight,
-                                  )
                                 ],
                               ),
                             ).animateSlideFade(14,
                                 animationDirection: AnimationDirection.bTt)
                           ] else
                             SizedBox(
-                              height: ScreenUtil().bottomBarHeight,
+                              height: (Platform.isAndroid
+                                  ? PaddingValues.p30.rh
+                                  : ScreenUtil().bottomBarHeight),
                             )
                         ],
                       );

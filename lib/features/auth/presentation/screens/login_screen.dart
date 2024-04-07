@@ -129,7 +129,7 @@ class LoginScreen extends StatelessWidget {
                   PaddingValues.pDefault.rw,
                   PaddingValues.p120.rh + ScreenUtil().statusBarHeight,
                   PaddingValues.pDefault.rw,
-                  PaddingValues.p20.rh + ScreenUtil().bottomBarHeight,
+                  PaddingValues.p20.rh + PaddingValues.p30.rh,
                 )
                     .pOnlyStartTopEndBottom,
               ),

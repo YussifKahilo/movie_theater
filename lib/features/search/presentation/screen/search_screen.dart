@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_theater/config/theme/themes_manager.dart';
 import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
+import 'package:movie_theater/core/extensions/responsive_manager.dart';
 import 'package:movie_theater/core/manager/color_manager.dart';
 import 'package:movie_theater/core/manager/values_manager.dart';
 import 'package:movie_theater/core/widgets/custom_text.dart';
@@ -93,7 +94,10 @@ class SearchScreen extends StatelessWidget {
                               PaddingValues.p16,
                               PaddingValues.p10,
                               PaddingValues.p16,
-                              (PaddingValues.p80 + ScreenUtil().bottomBarHeight)
+                              (PaddingValues.p80 +
+                                  (Platform.isAndroid
+                                      ? PaddingValues.p50.rh
+                                      : ScreenUtil().bottomBarHeight))
                             )
                                 .pOnlyStartTopEndBottom,
                             dataLength: movies.length,
@@ -116,7 +120,7 @@ class SearchScreen extends StatelessWidget {
                   } else {
                     return Column(
                       children: List.generate(
-                          Random().nextInt(3) + 1,
+                          1,
                           (index) => const MovieCardLoading()
                               .withPadding(PaddingValues.p15.pSymmetricV)),
                     ).withPadding(

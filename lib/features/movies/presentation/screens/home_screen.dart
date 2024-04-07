@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_theater/config/routes/routes.dart';
 import 'package:movie_theater/config/theme/themes_manager.dart';
 import 'package:movie_theater/core/extensions/animations_manager.dart';
+import 'package:movie_theater/core/extensions/responsive_manager.dart';
 import 'package:movie_theater/core/widgets/custom_container.dart';
 import 'package:movie_theater/features/movies/domain/entities/movie.dart';
 import 'package:movie_theater/features/movies/presentation/widgets/movie_card.dart';
@@ -46,8 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
           MoviesCubit.get(context).getMoviesTopRatedMoviesList();
         },
         child: SingleChildScrollView(
-          padding:
-              (ScreenUtil().bottomBarHeight + PaddingValues.p70).pOnlyBottom,
+          padding: ((Platform.isAndroid
+                      ? PaddingValues.p50.rh
+                      : ScreenUtil().bottomBarHeight) +
+                  PaddingValues.p70)
+              .pOnlyBottom,
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
