@@ -1,5 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_theater/core/cache/cache_consumer.dart';
+import 'package:movie_theater/core/cache/cache_keys.dart';
+import 'package:movie_theater/core/widgets/toast.dart';
+import 'package:movie_theater/src/injection_container.dart';
 import '/features/auth/domain/entities/login_inputs.dart';
 import '/features/auth/domain/entities/user.dart';
 import '/features/auth/domain/usecases/get_user_usecase.dart';
@@ -35,11 +40,19 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _getUserUsecase.call(sessionId);
 
     result.fold((failure) {
+      diInstance<CacheConsumer>().removeData(key: CacheKeys.accountId);
+      diInstance<CacheConsumer>().removeData(key: CacheKeys.sessionId);
       emit(GetUserFailedState(failure.message ?? 'Error'));
     }, (r) {
       emit(GetUserSuccessState(r));
     });
   }
 
-  void logout() {}
+  void logout(VoidCallback? function) {
+    diInstance<CacheConsumer>().removeData(key: CacheKeys.accountId);
+    diInstance<CacheConsumer>().removeData(key: CacheKeys.sessionId);
+    emit(const GetUserFailedState("User logged out"));
+    function?.call();
+    showToast('Logged Out !');
+  }
 }

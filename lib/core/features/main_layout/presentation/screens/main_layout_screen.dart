@@ -10,12 +10,16 @@ import 'package:movie_theater/core/extensions/border_manager.dart';
 import 'package:movie_theater/core/extensions/durations.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
 import 'package:movie_theater/core/extensions/responsive_manager.dart';
+import 'package:movie_theater/core/extensions/spacer.dart';
 import 'package:movie_theater/core/manager/color_manager.dart';
 import 'package:movie_theater/core/manager/values_manager.dart';
 import 'package:movie_theater/core/widgets/custom_container.dart';
 import 'package:movie_theater/core/widgets/custom_svg.dart';
+import 'package:movie_theater/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:movie_theater/features/favorites/presentation/cubit/favorites_cubit.dart';
 
 import '../../../../manager/assets_manager.dart';
+import '../../../../widgets/two_selection_dialog.dart';
 import '../../../theme/presentation/widget/theme_button.dart';
 
 class MainLayoutScreen extends StatelessWidget {
@@ -68,7 +72,67 @@ class MainLayoutScreen extends StatelessWidget {
                         size: AppSize.s50,
                         color: ColorsManager.primaryColor,
                       ).animateSlideFade(1),
-                      ThemeButton().animateSlideFade(3)
+                      Row(
+                        children: [
+                          ThemeButton().animateSlideFade(3),
+                          BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              if (state is GetUserSuccessState) {
+                                return Row(
+                                  children: [
+                                    AppSize.s10.spaceW,
+                                    CustomContainer(
+                                            color: ColorsManager
+                                                .primaryDarkColor
+                                                .withOpacity(0.3),
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    AnimationLimiter(
+                                                  child: TwoSelectionDialog(
+                                                    haveShadows: true,
+                                                    padding: PaddingValues
+                                                        .p10.pSymmetricV,
+                                                    title:
+                                                        'You sure you want to logout ?',
+                                                    firstText: 'Logout',
+                                                    firstOnTap: () {
+                                                      AuthCubit.get(context)
+                                                          .logout(() {
+                                                        FavoritesCubit.get(
+                                                                context)
+                                                            .getFavorites(1);
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                    secondText: 'Cancel',
+                                                    secondOnTap: () =>
+                                                        Navigator.pop(context),
+                                                  ).animateSlideFade(1,
+                                                      animationDirection:
+                                                          AnimationDirection
+                                                              .bTt),
+                                                ),
+                                              );
+                                            },
+                                            shape: BoxShape.circle,
+                                            child: const Icon(
+                                              Icons.logout_rounded,
+                                              color: ColorsManager
+                                                  .primaryDarkColor,
+                                            ).withPadding(
+                                                PaddingValues.p8.pSymmetricVH))
+                                        .animateSlideFade(4),
+                                  ],
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
+                        ],
+                      )
                     ],
                   ).withPadding(PaddingValues.p16.pSymmetricVH),
                   Expanded(

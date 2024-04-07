@@ -28,19 +28,14 @@ class LoginLoadingButton extends StatelessWidget {
     return CustomContainer(
       onTap: onTap,
       haveShadows: true,
-      width: isLoading ? AppSize.s70.rw : ScreenUtil().screenWidth,
+      width: isLoading ? AppSize.s55.rh : ScreenUtil().screenWidth,
       height: AppSize.s55.rh,
       borderRadius: isLoading ? BorderValues.b45.borderAll : null,
       padding: PaddingValues.p15.pAll,
       duration: DurationValues.dm250.milliseconds,
       child: isLoading
-          ? const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomLoading(
-                  color: ColorsManager.whiteColor,
-                ),
-              ],
+          ? const CustomLoading(
+              color: ColorsManager.whiteColor,
             )
           : Align(
               alignment: Alignment.center,

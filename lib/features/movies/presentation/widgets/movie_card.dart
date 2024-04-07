@@ -159,7 +159,8 @@ class MovieCard extends StatelessWidget {
                                         .copyWith(),
                               )
                             ],
-                          ).withPadding(PaddingValues.p2.pSymmetricVH),
+                          ).withPadding((PaddingValues.p2, PaddingValues.p10)
+                              .pSymmetricVH),
                         )
                       ],
                     ).withPadding(PaddingValues.p2.pSymmetricV),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_theater/config/theme/themes_manager.dart';
 
 import 'package:movie_theater/core/cubit/custom_cubit.dart';
-import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
 import 'package:movie_theater/core/manager/fonts_manager.dart';
 import 'package:movie_theater/core/widgets/custom_container.dart';
@@ -28,87 +26,86 @@ class FavoritesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int page = 1;
-    return AnimationLimiter(
-      child: BlocProvider(
-          create: (context) => CustomCubit<bool>(false),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (AuthCubit.get(context).state is GetUserSuccessState)
-                          CustomText(
-                            "${(AuthCubit.get(context).state as GetUserSuccessState).user.userName}'s",
-                            textAlign: TextAlign.start,
-                            textStyle:
-                                ThemesManager.getTitleSmallTextStyle(context),
-                          ),
+    return BlocProvider(
+        create: (context) => CustomCubit<bool>(false),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (AuthCubit.get(context).state is GetUserSuccessState)
                         CustomText(
-                          'Favorites',
+                          "${(AuthCubit.get(context).state as GetUserSuccessState).user.userName}'s",
                           textAlign: TextAlign.start,
-                          fontSize: FontSize.f45,
-                          height: 1,
                           textStyle:
-                              ThemesManager.getTitleLargeTextStyle(context),
+                              ThemesManager.getTitleSmallTextStyle(context),
                         ),
-                      ],
-                    ),
+                      CustomText(
+                        'Favorites',
+                        textAlign: TextAlign.start,
+                        fontSize: FontSize.f45,
+                        height: 1,
+                        textStyle:
+                            ThemesManager.getTitleLargeTextStyle(context),
+                      ),
+                    ],
                   ),
-                  BlocBuilder<CustomCubit<bool>, bool>(
-                    builder: (context, state) {
-                      return CustomContainer(
-                        onTap: () =>
-                            CustomCubit.get<bool>(context).changeState(!state),
-                        transparentButton: true,
-                        child: state
-                            ? const Icon(Icons.grid_view_rounded)
-                            : const Icon(Icons.list_rounded),
-                      );
-                    },
-                  ),
-                ],
-              ).withPadding(PaddingValues.p30.pSymmetricH),
-              Expanded(
-                child: BlocBuilder<CustomCubit<bool>, bool>(
+                ),
+                BlocBuilder<CustomCubit<bool>, bool>(
                   builder: (context, state) {
-                    if (state) {
-                      return PaginationGrid(
+                    return CustomContainer(
+                      onTap: () =>
+                          CustomCubit.get<bool>(context).changeState(!state),
+                      transparentButton: true,
+                      child: !state
+                          ? const Icon(Icons.grid_view_rounded)
+                          : const Icon(Icons.list_rounded),
+                    );
+                  },
+                ),
+              ],
+            ).withPadding(PaddingValues.p30.pSymmetricH),
+            Expanded(
+              child: BlocBuilder<CustomCubit<bool>, bool>(
+                builder: (context, state) {
+                  if (state) {
+                    return PaginationGrid(
+                      separator: AppSize.s30,
+                      maxPages: totalPages,
+                      dataLength: movies.length,
+                      padding: (PaddingValues.p120, PaddingValues.p16)
+                          .pBottomHorizontal,
+                      loadMoreData: () {
+                        FavoritesCubit.get(context).getFavorites(++page);
+                      },
+                      widgetBuilder: (index) => MovieGridCard(
+                          cacheData: false,
+                          clickAble: true,
+                          movie: movies[index]),
+                      page: page,
+                    );
+                  } else {
+                    return PaginationList(
+                        page: page,
                         separator: AppSize.s30,
                         maxPages: totalPages,
+                        padding: (PaddingValues.p120, PaddingValues.p16)
+                            .pBottomHorizontal,
                         dataLength: movies.length,
                         loadMoreData: () {
                           FavoritesCubit.get(context).getFavorites(++page);
                         },
-                        widgetBuilder: (index) => MovieGridCard(
-                                cacheData: false,
-                                clickAble: true,
-                                movie: movies[index])
-                            .animateSlideFade(index,
-                                animationDirection: AnimationDirection.tTb),
-                        page: page,
-                      );
-                    } else {
-                      return PaginationList(
-                          page: page,
-                          separator: AppSize.s30,
-                          maxPages: totalPages,
-                          dataLength: movies.length,
-                          loadMoreData: () {
-                            FavoritesCubit.get(context).getFavorites(++page);
-                          },
-                          widgetBuilder: (int index) =>
-                              MovieCard(movie: movies[index], cacheData: false)
-                                  .animateSlideFade(index));
-                    }
-                  },
-                ),
-              )
-            ],
-          )),
-    );
+                        widgetBuilder: (int index) =>
+                            MovieCard(movie: movies[index], cacheData: false));
+                  }
+                },
+              ),
+            )
+          ],
+        ));
   }
 }

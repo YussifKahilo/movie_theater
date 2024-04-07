@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_theater/core/cubit/custom_cubit.dart';
-import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
 import 'package:movie_theater/core/extensions/spacer.dart';
 import 'package:movie_theater/core/widgets/custom_app_bar.dart';
@@ -59,7 +58,7 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                       CustomCubit.get<bool>(context).changeState(!state),
                   transparentButton: true,
                   margin: PaddingValues.p16.pOnlyEnd,
-                  child: state
+                  child: !state
                       ? const Icon(Icons.grid_view_rounded)
                       : const Icon(Icons.list_rounded),
                 );
@@ -118,11 +117,9 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                             .getMovies(++page, widget.movieSection);
                       },
                       widgetBuilder: (index) => MovieGridCard(
-                              cacheData: false,
-                              clickAble: true,
-                              movie: movies[index])
-                          .animateSlideFade(index,
-                              animationDirection: AnimationDirection.tTb),
+                          cacheData: false,
+                          clickAble: true,
+                          movie: movies[index]),
                       page: page,
                     );
                   } else {
@@ -136,8 +133,7 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                               .getMovies(++page, widget.movieSection);
                         },
                         widgetBuilder: (int index) =>
-                            MovieCard(movie: movies[index], cacheData: false)
-                                .animateSlideFade(index));
+                            MovieCard(movie: movies[index], cacheData: false));
                   }
                 },
               );
