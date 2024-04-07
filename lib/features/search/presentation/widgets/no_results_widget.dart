@@ -11,10 +11,12 @@ import '../../../../core/widgets/custom_text.dart';
 class NoResultsWidget extends StatelessWidget {
   const NoResultsWidget({
     Key? key,
-    required this.title,
+    this.title,
+    this.text,
   }) : super(key: key);
 
-  final String title;
+  final String? title;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class NoResultsWidget extends StatelessWidget {
           ),
           AppSize.s30.spaceH,
           CustomText(
-            'No results for "$title"',
+            text ?? 'No results for "$title"',
             color: ColorsManager.primaryColor,
           ),
           AppSize.s50.spaceH,

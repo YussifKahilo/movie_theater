@@ -1,26 +1,22 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_theater/core/extensions/border_manager.dart';
+import '../manager/values_manager.dart';
+import 'custom_container.dart';
 
-import '../../../../core/manager/assets_manager.dart';
-import '../../../../core/manager/values_manager.dart';
-import '../../../../core/widgets/custom_container.dart';
-import '../../../../core/widgets/custom_image.dart';
+class BlurredBackGround extends StatelessWidget {
+  const BlurredBackGround({
+    Key? key,
+    required this.customImage,
+  }) : super(key: key);
 
-class LoginBackGround extends StatelessWidget {
-  const LoginBackGround({super.key});
+  final Widget customImage;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CustomImage(
-          width: ScreenUtil().screenWidth,
-          height: ScreenUtil().screenHeight,
-          imageAsset: AssetsManager.loginWallpaper,
-        ),
+        customImage,
         Positioned(
           top: 0,
           right: 0,

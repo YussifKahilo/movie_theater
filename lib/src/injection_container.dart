@@ -10,6 +10,11 @@ import 'package:movie_theater/features/auth/data/repositories/auth_repository_im
 import 'package:movie_theater/features/auth/domain/repositories/auth_repository.dart';
 import 'package:movie_theater/features/auth/domain/usecases/get_user_usecase.dart';
 import 'package:movie_theater/features/auth/domain/usecases/login_usecase.dart';
+import 'package:movie_theater/features/favorites/data/datasources/favorites_remote_datasource.dart';
+import 'package:movie_theater/features/favorites/data/repositories/favorites_repository_impl.dart';
+import 'package:movie_theater/features/favorites/domain/repositories/favorites_repository.dart';
+import 'package:movie_theater/features/favorites/domain/usecases/get_favorites_list.dart';
+import 'package:movie_theater/features/favorites/domain/usecases/mark_favorite_usecase.dart';
 import 'package:movie_theater/features/movies/data/datasources/movies_local_datasource.dart';
 import 'package:movie_theater/features/movies/data/datasources/movies_remote_datasource.dart';
 import 'package:movie_theater/features/movies/data/repositories/movies_repository_impl.dart';
@@ -40,6 +45,7 @@ Future<void> initAppModule() async {
   initThemeModule();
   initMoviesModule();
   initAuthModule();
+  initFavoritesModule();
 
   //! Core
   diInstance.registerLazySingleton<NetworkInfo>(
@@ -99,6 +105,22 @@ Future<void> initAuthModule() async {
       () => AuthRemoteDatasourceImpl(diInstance()));
   diInstance.registerLazySingleton<AuthLocalDatasource>(
       () => AuthLocalDatasourceImpl(diInstance()));
+}
+
+Future<void> initFavoritesModule() async {
+  //?Use cases
+  diInstance.registerLazySingleton<GetFavoritesUsecase>(
+      () => GetFavoritesUsecase(diInstance()));
+  diInstance.registerLazySingleton<MarkFavoritesUsecase>(
+      () => MarkFavoritesUsecase(diInstance()));
+
+  //?Repositories
+  diInstance.registerLazySingleton<FavoritesRepository>(
+      () => FavoritesRepositoryImpl(diInstance(), diInstance(), diInstance()));
+
+  //?Data Sources
+  diInstance.registerLazySingleton<FavoritesRemoteDatasource>(
+      () => FavoritesRemoteDatasourceImpl(diInstance()));
 }
 
 Future<void> initMoviesModule() async {

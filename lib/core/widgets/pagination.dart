@@ -32,7 +32,7 @@ class PaginationList<T> extends StatelessWidget {
     scrollController.addListener(() {
       if ((scrollController.position.pixels ==
               scrollController.position.maxScrollExtent) &&
-          page < maxPages) {
+          page != maxPages) {
         loadMoreData();
       }
     });
@@ -50,7 +50,7 @@ class PaginationList<T> extends StatelessWidget {
           }
         },
         separatorBuilder: (context, index) => (separator ?? AppSize.s25).spaceH,
-        itemCount: dataLength + (page < maxPages ? 1 : 0));
+        itemCount: dataLength + (page != maxPages ? 1 : 0));
   }
 }
 

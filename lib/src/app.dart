@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           create: (context) => NetworkConnectivityCubit(),
         ),
         BlocProvider(
-          create: (context) => FavoritesCubit(),
+          create: (context) => FavoritesCubit(diInstance(), diInstance()),
         ),
         BlocProvider(
           create: (context) =>

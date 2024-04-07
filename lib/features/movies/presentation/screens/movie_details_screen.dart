@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_theater/core/widgets/blurred_background.dart';
 import 'package:movie_theater/core/widgets/custom_back_button.dart';
+import 'package:movie_theater/core/widgets/loading.dart';
+import 'package:movie_theater/core/widgets/toast.dart';
+import 'package:movie_theater/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:readmore/readmore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:movie_theater/config/theme/themes_manager.dart';
-import 'package:movie_theater/core/cubit/custom_cubit.dart';
 import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/extensions/border_manager.dart';
 import 'package:movie_theater/core/extensions/durations.dart';
@@ -51,48 +54,21 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isFav = (FavoritesCubit.get(context).state as GetFavoritesSuccessState)
+        .favoritesContains(widget.movie.id);
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            top: 0,
-            child: widget.movie.backDropImagePath == null
-                ? const SizedBox()
-                : CustomImage(
-                    borderRadius: BorderRadius.zero,
-                    basePath: StringsManager.imageBasePath,
-                    imageUrl: widget.movie.posterPath.toString(),
-                  ),
-          ),
-          Positioned(
-            top: 0,
-            right: 0,
-            left: 0,
-            bottom: 0,
-            child: CustomContainer(
-              borderRadius: BorderRadius.zero,
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).scaffoldBackgroundColor,
-                  Theme.of(context).scaffoldBackgroundColor,
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
-                  Theme.of(context).scaffoldBackgroundColor,
-                  Theme.of(context).scaffoldBackgroundColor,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              child: const SizedBox(),
-            ),
-          ),
+          BlurredBackGround(
+              customImage: widget.movie.backDropImagePath == null
+                  ? const SizedBox()
+                  : CustomImage(
+                      borderRadius: BorderRadius.zero,
+                      basePath: StringsManager.imageBasePath,
+                      height: ScreenUtil().screenHeight,
+                      width: ScreenUtil().screenWidth,
+                      imageUrl: widget.movie.posterPath.toString(),
+                    )),
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
@@ -177,40 +153,51 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ThemesManager.getTitleMediumTextStyle(context),
                       ),
                     ),
-                    BlocProvider(
-                      create: (context) => CustomCubit<double>(0),
-                      child: BlocBuilder<CustomCubit<double>, double>(
-                        builder: (context, state) {
-                          return CustomContainer(
-                            onTap: () {
-                              CustomCubit.get<double>(context)
-                                  .changeState(state == 0 ? 1 : 0);
-                            },
-                            padding: PaddingValues.p5.pAll,
-                            margin: PaddingValues.p5.pAll,
-                            transparentButton: true,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Icon(
-                                  Icons.favorite_border,
-                                  color: Theme.of(context).iconTheme.color,
-                                  size: AppSize.s30.rs,
+                    BlocConsumer<FavoritesCubit, FavoritesState>(
+                      listener: (context, state) {
+                        if (state is MarkMovieFavoriteFailedState) {
+                          showToast(state.message);
+                        }
+                      },
+                      buildWhen: (previous, current) =>
+                          current is GetFavoritesSuccessState ||
+                          current is MarkMovieFavoriteLoadingState,
+                      builder: (context, state) {
+                        return CustomContainer(
+                          onTap: state is MarkMovieFavoriteLoadingState
+                              ? null
+                              : () {
+                                  FavoritesCubit.get(context)
+                                      .markFavorites(widget.movie.id, !isFav)
+                                      .then((value) => isFav = !isFav);
+                                },
+                          padding: PaddingValues.p5.pAll,
+                          margin: PaddingValues.p5.pAll,
+                          transparentButton: true,
+                          child: state is MarkMovieFavoriteLoadingState
+                              ? const CustomLoading()
+                              : Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.favorite_border,
+                                      color: Theme.of(context).iconTheme.color,
+                                      size: AppSize.s30.rs,
+                                    ),
+                                    AnimatedOpacity(
+                                      opacity: isFav ? 1 : 0,
+                                      duration:
+                                          DurationValues.dm250.milliseconds,
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: ColorsManager.primaryColor,
+                                        size: AppSize.s25.rs,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                AnimatedOpacity(
-                                  opacity: state,
-                                  duration: DurationValues.dm250.milliseconds,
-                                  child: Icon(
-                                    Icons.favorite,
-                                    color: ColorsManager.primaryColor,
-                                    size: AppSize.s25.rs,
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                        );
+                      },
                     )
                   ],
                 )

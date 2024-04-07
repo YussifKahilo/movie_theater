@@ -26,7 +26,6 @@ class AuthRepositoryImpl implements AuthRepository {
       UserModel userModel;
       if (sessionId != null) {
         userModel = await _authRemoteDatasource.getUser(sessionId);
-        await _authLocalDatasource.saveSessionId(sessionId);
       } else {
         String? savedSessionId = await _authLocalDatasource.getSessionId();
         if (savedSessionId != null) {
@@ -36,6 +35,7 @@ class AuthRepositoryImpl implements AuthRepository {
         }
       }
 
+      await _authLocalDatasource.saveAccountId(userModel.id);
       return userModel;
     } else {
       throw const NoInternetConnectionException('No interned connection');
@@ -49,7 +49,11 @@ class AuthRepositoryImpl implements AuthRepository {
       final String requestToken =
           await _authRemoteDatasource.createRequestToken();
       await _authRemoteDatasource.login(loginInputs, requestToken);
-      return await _authRemoteDatasource.createSession(requestToken);
+      final String sessionId =
+          await _authRemoteDatasource.createSession(requestToken);
+      await _authLocalDatasource.saveSessionId(sessionId);
+
+      return sessionId;
     } else {
       throw const NoInternetConnectionException('No interned connection');
     }

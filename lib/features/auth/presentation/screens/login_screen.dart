@@ -10,11 +10,12 @@ import 'package:movie_theater/core/widgets/custom_password_field.dart';
 import 'package:movie_theater/core/widgets/custom_snackbar.dart';
 import 'package:movie_theater/core/widgets/custom_svg.dart';
 import 'package:movie_theater/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:movie_theater/features/auth/presentation/widgets/login_background.dart';
+import 'package:movie_theater/core/widgets/blurred_background.dart';
 import 'package:movie_theater/features/auth/presentation/widgets/login_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/manager/values_manager.dart';
+import '../../../../core/widgets/custom_image.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/manager/assets_manager.dart';
 import '../widgets/login_success_card.dart';
@@ -32,7 +33,13 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          const LoginBackGround(),
+          BlurredBackGround(
+            customImage: CustomImage(
+              width: ScreenUtil().screenWidth,
+              height: ScreenUtil().screenHeight,
+              imageAsset: AssetsManager.loginWallpaper,
+            ),
+          ),
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: AnimationLimiter(
@@ -91,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                                     context: context,
                                     builder: (context) =>
                                         const LoginSuccessCard())
-                                .then((value) => Navigator.pop(context));
+                                .then((value) => Navigator.pop(context, true));
                           } else if (state is LoginFailedState) {
                             showSnackBar(
                                 context: context, content: state.message);

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_theater/config/routes/routes.dart';
 import 'package:movie_theater/core/extensions/durations.dart';
 import 'package:movie_theater/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:movie_theater/features/favorites/presentation/cubit/favorites_cubit.dart';
 import '../../../../manager/assets_manager.dart';
 import '/core/manager/values_manager.dart';
 
@@ -50,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
           current is GetUserFailedState || current is GetUserSuccessState,
       listener: (context, state) {
         if (state is GetUserSuccessState) {
-          //TODO: get favorites list
+          FavoritesCubit.get(context).getFavorites(1);
           if (_timer != null && !_timer!.isActive) {
             _navigateToNextScreen();
           }
