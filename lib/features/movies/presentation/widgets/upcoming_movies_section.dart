@@ -26,64 +26,61 @@ class UpcomingMoviesSection extends StatelessWidget {
         children: [
           BlocBuilder<CustomCubit<int>, int>(
             builder: (context, state) {
-              return Hero(
-                tag: movies[state].backDropImagePath.toString(),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      top: 0,
-                      child: movies[state].backDropImagePath == null
-                          ? const SizedBox()
-                          : CustomImage(
-                              borderRadius: BorderRadius.zero,
-                              basePath: StringsManager.imageBasePath,
-                              imageUrl: movies[state].backDropImagePath,
-                            ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      left: 0,
-                      bottom: 0,
-                      child: CustomContainer(
-                        borderRadius: BorderRadius.zero,
-                        gradient: LinearGradient(
-                          colors: [
-                            Theme.of(context).scaffoldBackgroundColor,
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.9),
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.6),
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.2),
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0),
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.2),
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.6),
-                            Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.9),
-                            Theme.of(context).scaffoldBackgroundColor,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        child: const SizedBox(),
+              return Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 0,
+                    child: movies[state].backDropImagePath == null
+                        ? const SizedBox()
+                        : CustomImage(
+                            borderRadius: BorderRadius.zero,
+                            basePath: StringsManager.imageBasePath,
+                            imageUrl: movies[state].backDropImagePath,
+                          ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                    child: CustomContainer(
+                      borderRadius: BorderRadius.zero,
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).scaffoldBackgroundColor,
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.9),
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.6),
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.2),
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0),
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.2),
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.6),
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.9),
+                          Theme.of(context).scaffoldBackgroundColor,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
+                      child: const SizedBox(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
             },
           ),
@@ -96,11 +93,8 @@ class UpcomingMoviesSection extends StatelessWidget {
                 CustomCubit.get<int>(context).changeState(value);
               },
               scale: 0.25.rs,
-              itemBuilder: (context, index) => Hero(
-                tag: movies[index].posterPath.toString(),
-                child: UpcomingMovieCard(
-                  movie: movies[index],
-                ),
+              itemBuilder: (context, index) => UpcomingMovieCard(
+                movie: movies[index],
               ),
             );
           }),

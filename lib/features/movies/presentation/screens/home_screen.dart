@@ -29,8 +29,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    MoviesCubit.get(context).getMoviesUpComingMoviesList();
-    MoviesCubit.get(context).getMoviesTopRatedMoviesList();
+    MoviesCubit.get(context).getMoviesUpComingMoviesList(true);
+    MoviesCubit.get(context).getMoviesTopRatedMoviesList(true);
     super.initState();
   }
 
@@ -40,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: RefreshIndicator(
         color: ColorsManager.primaryColor,
         onRefresh: () async {
-          MoviesCubit.get(context).getMoviesUpComingMoviesList();
-          MoviesCubit.get(context).getMoviesTopRatedMoviesList();
+          MoviesCubit.get(context).getMoviesUpComingMoviesList(true);
+          MoviesCubit.get(context).getMoviesTopRatedMoviesList(true);
         },
         child: SingleChildScrollView(
           padding:
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (state is GetUpComingMoviesListFailedState) {
                             return CustomErrorWidget(
                               onTap: () => MoviesCubit.get(context)
-                                  .getMoviesUpComingMoviesList(),
+                                  .getMoviesUpComingMoviesList(true),
                               error: state.message,
                             );
                           } else if (state
@@ -135,15 +135,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state is GetTopRatedMoviesListFailedState) {
                     return CustomErrorWidget(
                       onTap: () => MoviesCubit.get(context)
-                          .getMoviesTopRatedMoviesList(),
+                          .getMoviesTopRatedMoviesList(true),
                       error: state.message,
                     );
                   } else if (state is GetTopRatedMoviesListSuccessState) {
                     return Column(
                       children: List.generate(
                           state.movies.length,
-                          (index) => MovieCard(movie: state.movies[index])
-                              .withPadding(PaddingValues.p15.pSymmetricV)),
+                          (index) => MovieCard(
+                                movie: state.movies[index],
+                                cacheData: true,
+                              ).withPadding(PaddingValues.p15.pSymmetricV)),
                     ).withPadding(PaddingValues.p16.pSymmetricH);
                   } else {
                     return Column(

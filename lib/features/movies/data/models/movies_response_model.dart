@@ -17,7 +17,7 @@ class MoviesResponseModel {
       totalResults: map['total_results'],
       totalPages: map['total_pages'],
       movies: List<MovieModel>.from(
-          map['results'].map((x) => MovieModel.fromMap(x))),
+          map['results'].map((x) => MovieModel.fromMap(x))).toList(),
     );
   }
 }

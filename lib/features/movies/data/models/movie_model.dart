@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:movie_theater/features/movies/data/models/production_company_model.dart';
 
 import '../../domain/entities/movie.dart';
@@ -34,8 +35,12 @@ class MovieModel extends Movie {
       tagline: map['tagline'],
       productionCompanies: map['production_companies'] == null
           ? null
-          : List<ProductionCompanyModel>.from(map['production_companies']
-              ?.map((x) => ProductionCompanyModel.fromMap(x))),
+          : map['production_companies'] is String
+              ? (jsonDecode(map['production_companies']) as List)
+                  .map((x) => ProductionCompanyModel.fromMap(x))
+                  .toList()
+              : List<ProductionCompanyModel>.from(map['production_companies']
+                  ?.map((x) => ProductionCompanyModel.fromMap(x))).toList(),
     );
   }
 
@@ -53,8 +58,10 @@ class MovieModel extends Movie {
       'vote_average': voteAverage,
       'runtime': runtime,
       'tagline': tagline,
-      'production_companies':
-          productionCompanies?.map((x) => x.toDomain().toMap()).toList(),
+      'production_companies': productionCompanies == null
+          ? null
+          : jsonEncode(
+              productionCompanies?.map((x) => x.toDomain().toMap()).toList()),
     };
   }
 }

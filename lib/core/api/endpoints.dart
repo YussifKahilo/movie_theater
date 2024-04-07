@@ -1,6 +1,6 @@
 class EndPoints {
-  static const String movie = 'movie/';
-  static const String topRatedMovies = '$movie/top_rated';
+  static const String movie = 'movie/&id&';
+  static const String topRatedMovies = 'movie/top_rated';
   static const String upComing = 'discover/movie';
   static const String search = 'search/movie';
 

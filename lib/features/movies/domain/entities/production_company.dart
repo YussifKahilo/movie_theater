@@ -2,7 +2,7 @@ import 'package:movie_theater/features/movies/data/models/production_company_mod
 
 class ProductionCompany {
   final int id;
-  final String logoPath;
+  final String? logoPath;
   final String name;
   ProductionCompany({
     required this.id,

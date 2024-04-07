@@ -15,6 +15,11 @@ class SqlTables {
         vote_count INTEGER NOT NULL,
         vote_average NUMBER NOT NULL,
         movie_section INTEGER NOT NULL,
+        runtime INTEGER,
+        tagline TEXT,
+        homepage TEXT,
+        status TEXT,
+        production_companies TEXT 
       )
     ''');
   }

@@ -25,6 +25,8 @@ import '../core/features/theme/domain/usecases/change_theme.dart';
 import '../core/features/theme/domain/usecases/get_saved_theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 
+import '../features/movies/domain/usecases/get_movie_usecase.dart';
+
 final diInstance = GetIt.instance;
 
 Future<void> initAppModule() async {
@@ -78,6 +80,8 @@ Future<void> initMoviesModule() async {
   //?Use cases
   diInstance.registerLazySingleton<GetMoviesUsecase>(
       () => GetMoviesUsecase(diInstance()));
+  diInstance.registerLazySingleton<GetMovieUsecase>(
+      () => GetMovieUsecase(diInstance()));
   //?Search Usecase
   diInstance.registerLazySingleton<SearchMovieUsecase>(
       () => SearchMovieUsecase(diInstance()));

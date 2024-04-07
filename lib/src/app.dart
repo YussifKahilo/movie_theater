@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             ..getSavedTheme(),
         ),
         BlocProvider(
-          create: (context) => MoviesCubit(diInstance()),
+          create: (context) => MoviesCubit(diInstance(), diInstance()),
         ),
         BlocProvider(
           create: (context) => NetworkConnectivityCubit(),

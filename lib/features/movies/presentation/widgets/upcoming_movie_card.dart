@@ -42,7 +42,7 @@ class UpcomingMovieCard extends StatelessWidget {
             child: CustomContainer(
               onTap: () => Navigator.pushNamed(
                   context, Routes.movieDetailsScreen,
-                  arguments: movie),
+                  arguments: (movie, true)),
               gradient: LinearGradient(
                 colors: [
                   Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),

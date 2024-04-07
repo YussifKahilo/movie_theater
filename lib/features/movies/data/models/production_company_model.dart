@@ -7,7 +7,7 @@ class ProductionCompanyModel extends ProductionCompany {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'logoPath': logoPath,
+      'logo_path': logoPath,
       'name': name,
     };
   }

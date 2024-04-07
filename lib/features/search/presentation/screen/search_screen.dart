@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_theater/config/theme/themes_manager.dart';
+import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
 import 'package:movie_theater/core/manager/color_manager.dart';
 import 'package:movie_theater/core/manager/values_manager.dart';
@@ -71,24 +73,29 @@ class SearchScreen extends StatelessWidget {
                         ).withPadding((PaddingValues.p10, PaddingValues.p16)
                             .pSymmetricVH),
                         Expanded(
-                            child: PaginationList(
-                          padding: (
-                            PaddingValues.p16,
-                            PaddingValues.p10,
-                            PaddingValues.p16,
-                            (PaddingValues.p80 + ScreenUtil().bottomBarHeight)
-                          )
-                              .pOnlyStartTopEndBottom,
-                          dataLength: state.movies.length,
-                          maxPages: state.totalPages,
-                          loadMoreData: (nextPage) {
-                            SearchCubit.get(context).searchFor(
-                                searchController.text.trim(), nextPage);
-                          },
-                          separator: AppSize.s30,
-                          widgetBuilder: (index) {
-                            return MovieCard(movie: state.movies[index]);
-                          },
+                            child: AnimationLimiter(
+                          child: PaginationList(
+                            padding: (
+                              PaddingValues.p16,
+                              PaddingValues.p10,
+                              PaddingValues.p16,
+                              (PaddingValues.p80 + ScreenUtil().bottomBarHeight)
+                            )
+                                .pOnlyStartTopEndBottom,
+                            dataLength: state.movies.length,
+                            maxPages: state.totalPages,
+                            loadMoreData: (nextPage) {
+                              SearchCubit.get(context).searchFor(
+                                  searchController.text.trim(), nextPage);
+                            },
+                            separator: AppSize.s30,
+                            widgetBuilder: (index) {
+                              return MovieCard(
+                                movie: state.movies[index],
+                                cacheData: false,
+                              ).animateSlideFade(index);
+                            },
+                          ),
                         )),
                       ],
                     );

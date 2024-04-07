@@ -12,6 +12,7 @@ abstract class MoviesLocaleDataSource {
   Future<void> saveMovie(MovieModel movie, MovieSection movieSection);
   Future<void> clearSavedMovies();
   Future<MoviesResponseModel> searchMovie(String query);
+  Future<MovieModel> getMovie(int id);
 }
 
 class MoviesLocaleDataSourceImpl implements MoviesLocaleDataSource {
@@ -39,8 +40,14 @@ class MoviesLocaleDataSourceImpl implements MoviesLocaleDataSource {
   @override
   Future<void> saveMovie(MovieModel movie, MovieSection movieSection) async {
     Map<String, dynamic> row = movie.toMap();
-    row.addAll({'movie_section': movieSection.index});
-    await _dbConsumer.addData(row: row, table: SqlTables.moviesTable);
+    try {
+      row.addAll({'movie_section': movieSection.index});
+      await _dbConsumer.addData(row: row, table: SqlTables.moviesTable);
+    } catch (e) {
+      row.addAll({'movie_section': movieSection.index});
+      await _dbConsumer.updateData(
+          row: row, table: SqlTables.moviesTable, where: 'id = ${movie.id}');
+    }
   }
 
   @override
@@ -50,8 +57,17 @@ class MoviesLocaleDataSourceImpl implements MoviesLocaleDataSource {
   @override
   Future<MoviesResponseModel> searchMovie(String query) async {
     List<Map<String, dynamic>> rows = await _dbConsumer.getData(
-        table: SqlTables.moviesTable, where: 'title = $query');
+        table: SqlTables.moviesTable, where: "title LIKE '%$query%'");
+
     return MoviesResponseModel.fromMap(
-        {"results": rows.map((e) => MovieModel.fromMap(e))});
+        {"results": rows, 'total_results': rows.length});
+  }
+
+  @override
+  Future<MovieModel> getMovie(int id) async {
+    final response = await _dbConsumer.getData(
+        table: SqlTables.moviesTable, where: 'id = $id');
+
+    return MovieModel.fromMap(response.first);
   }
 }

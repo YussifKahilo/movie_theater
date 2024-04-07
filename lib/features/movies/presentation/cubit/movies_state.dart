@@ -34,3 +34,15 @@ class GetUpComingMoviesListFailedState extends MoviesState {
 }
 
 class GetUpComingMoviesListLoadingState extends MoviesState {}
+
+class GetMovieSuccessState extends MoviesState {
+  final Movie movie;
+  const GetMovieSuccessState(this.movie);
+}
+
+class GetMovieFailedState extends MoviesState {
+  final String message;
+  const GetMovieFailedState(this.message);
+}
+
+class GetMovieLoadingState extends MoviesState {}
