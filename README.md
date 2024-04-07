@@ -25,37 +25,13 @@
 6. **Run the app:**
    ```bash
    flutter run
-   
-## Features
 
-1. **Offline mode and data caching:**
-    * The app caches data to ensure it works seamlessly in offline mode*
-   
-2. **Search:**
-   ```bash
-   cd movie_theater
-
-3. **Download the ".env" file from:**
-   [here](https://drive.google.com/file/d/1N_PtYI_q0Fb_9NQeMOqYZIA_7F-KWFVP/view?usp=share_link)
-  
-4. **Place the ".env" file in movie_theater folder (movie_theater/.env)**
-   
-5. **Install dependencies:**
-   ```bash
-   flutter pub get
-
-6. **Run the app:**
-   ```bash
-   flutter run
-   
 ## Using the app
-
-    * Simply open the app and every thing will be working properly,
-    * Only when trying to mark a movie as favorite you will have to login first
-    * The TMDB (The movies data base) work with only the user that created the api key so you will have to login with my account,
-
-         * Username: YussifKahilo
-         * Password: Kahilo123
+* Simply open the app and every thing will be working properly,
+* Only when trying to mark a movie as favorite you will have to login first
+* The TMDB (The movies data base) work with only the user that created the api key so you will have to login with my account,
+* Username: YussifKahilo
+* Password: Kahilo123
 
 ## Additional libraries or packages used
 
