@@ -6,6 +6,7 @@ import 'package:movie_theater/core/features/main_layout/presentation/screens/mai
 import 'package:movie_theater/core/manager/assets_manager.dart';
 import 'package:movie_theater/core/manager/color_manager.dart';
 import 'package:movie_theater/core/widgets/custom_container.dart';
+import 'package:movie_theater/features/favorites/presentation/screen/favorites_screen.dart';
 import 'package:movie_theater/features/movies/presentation/screens/home_screen.dart';
 import 'package:movie_theater/features/search/presentation/screen/search_screen.dart';
 
@@ -22,7 +23,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
   final List<Widget> pages = [
     const HomeScreen(),
     const SearchScreen(),
-    const SizedBox()
+    const FavoritesScreen()
   ];
 
   @override

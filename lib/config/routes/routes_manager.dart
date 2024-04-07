@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:movie_theater/features/auth/presentation/screens/login_screen.dart';
 import 'package:movie_theater/features/layout/presentation/screen/layout_screen.dart';
 import 'package:movie_theater/features/movies/domain/entities/movie.dart';
 import 'package:movie_theater/features/movies/presentation/screens/movies_list_screen.dart';
@@ -21,6 +22,9 @@ class RoutesManager {
         break;
       case Routes.layoutScreen:
         screen = LayoutScreen();
+        break;
+      case Routes.loginScreen:
+        screen = const LoginScreen();
         break;
       case Routes.movieDetailsScreen:
         screen = MovieDetailsScreen(
