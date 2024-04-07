@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_theater/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:movie_theater/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:movie_theater/features/movies/presentation/cubit/movies_cubit.dart';
 import '../config/routes/routes.dart';
@@ -41,6 +42,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => FavoritesCubit(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              AuthCubit(diInstance(), diInstance())..getUser(null),
         )
       ],
       child: ScreenUtilInit(

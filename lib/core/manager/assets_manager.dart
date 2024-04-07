@@ -7,6 +7,7 @@ class AssetsManager {
 
   //images
   static const String placeholder = '$imagesPath/placeholder.png';
+  static const String loginWallpaper = '$imagesPath/login wallpaper.jpg';
 
   //******************************************************
 

@@ -4,6 +4,12 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie_theater/core/db/db_consumer.dart';
 import 'package:movie_theater/core/db/sql_consumer.dart';
 import 'package:movie_theater/core/manager/strings_manager.dart';
+import 'package:movie_theater/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:movie_theater/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:movie_theater/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:movie_theater/features/auth/domain/repositories/auth_repository.dart';
+import 'package:movie_theater/features/auth/domain/usecases/get_user_usecase.dart';
+import 'package:movie_theater/features/auth/domain/usecases/login_usecase.dart';
 import 'package:movie_theater/features/movies/data/datasources/movies_local_datasource.dart';
 import 'package:movie_theater/features/movies/data/datasources/movies_remote_datasource.dart';
 import 'package:movie_theater/features/movies/data/repositories/movies_repository_impl.dart';
@@ -33,6 +39,7 @@ Future<void> initAppModule() async {
   //! Features
   initThemeModule();
   initMoviesModule();
+  initAuthModule();
 
   //! Core
   diInstance.registerLazySingleton<NetworkInfo>(
@@ -74,6 +81,24 @@ Future<void> initThemeModule() async {
   //?Data Sources
   diInstance.registerLazySingleton<ThemeLocalDataSource>(
       () => ThemeLocalDataSourceImpl(cacheConsumer: diInstance()));
+}
+
+Future<void> initAuthModule() async {
+  //?Use cases
+  diInstance.registerLazySingleton<GetUserUsecase>(
+      () => GetUserUsecase(diInstance()));
+  diInstance
+      .registerLazySingleton<LoginUsecase>(() => LoginUsecase(diInstance()));
+
+  //?Repositories
+  diInstance.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(diInstance(), diInstance(), diInstance()));
+
+  //?Data Sources
+  diInstance.registerLazySingleton<AuthRemoteDatasource>(
+      () => AuthRemoteDatasourceImpl(diInstance()));
+  diInstance.registerLazySingleton<AuthLocalDatasource>(
+      () => AuthLocalDatasourceImpl(diInstance()));
 }
 
 Future<void> initMoviesModule() async {
