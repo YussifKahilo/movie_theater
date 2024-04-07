@@ -146,7 +146,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       .copyWith(),
                             )
                           ],
-                        ).withPadding(PaddingValues.p2.pSymmetricVH),
+                        ).withPadding(
+                            (PaddingValues.p2, PaddingValues.p10).pSymmetricVH),
                       ).animateSlideFade(5,
                           animationDirection: AnimationDirection.tTb),
                     ],
@@ -188,7 +189,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   if (!isUserLoggedIn(context)) {
                                     showDialog(
                                       context: context,
-                                      builder: (context) => AnimationLimiter(
+                                      builder: (_) => AnimationLimiter(
                                         child: TwoSelectionDialog(
                                           haveShadows: true,
                                           padding:
@@ -199,13 +200,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             Navigator.pop(context);
                                             Navigator.pushNamed(
                                                     context, Routes.loginScreen)
-                                                .then((value) => value != null
-                                                    ? Navigator
-                                                        .pushNamedAndRemoveUntil(
-                                                            context,
-                                                            Routes.layoutScreen,
-                                                            (route) => false)
-                                                    : null);
+                                                .then((value) {
+                                              if (value != null) {
+                                                FavoritesCubit.get(context)
+                                                    .getFavorites(1);
+                                                Navigator.pop(context);
+                                              }
+                                            });
                                           },
                                           secondText: 'Cancel',
                                           secondOnTap: () =>
@@ -422,34 +423,23 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               state.movie.homePageUrl!.isNotEmpty) ...[
                             AppSize.s30.spaceH,
                             CustomContainer(
+                              haveShadows: true,
                               onTap: () => launch(state.movie.homePageUrl!),
                               width: double.infinity,
-                              gradient: LinearGradient(
-                                  colors: [
-                                    ColorsManager.primaryColor,
-                                    ColorsManager.primaryColor.withOpacity(0.8),
-                                    ColorsManager.primaryColor.withOpacity(0.4),
-                                    ColorsManager.primaryColor.withOpacity(0.1),
-                                    ColorsManager.greyDarkColor.withOpacity(0),
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
                               height: AppSize.s40.rh +
                                   (Platform.isAndroid
                                       ? PaddingValues.p30.rh
                                       : ScreenUtil().bottomBarHeight),
-                              borderRadius: BorderValues.b15.borderTop,
-                              child: Column(
-                                children: [
-                                  AppSize.s10.spaceH,
-                                  CustomText(
-                                    'View Movie',
-                                    textStyle:
-                                        ThemesManager.getTitleSmallTextStyle(
-                                            context),
-                                    color: ColorsManager.whiteColor,
-                                  ),
-                                ],
+                              borderRadius: BorderValues.b15.borderAll,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: CustomText(
+                                  'View Movie',
+                                  textStyle:
+                                      ThemesManager.getTitleSmallTextStyle(
+                                          context),
+                                  color: ColorsManager.whiteColor,
+                                ),
                               ),
                             ).animateSlideFade(14,
                                 animationDirection: AnimationDirection.bTt)

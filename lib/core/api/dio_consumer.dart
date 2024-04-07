@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,8 +18,8 @@ class DioConsumer implements ApiConsumer {
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
     );
-    dio.interceptors.add(di.diInstance<AppInterceptors>());
     if (kDebugMode) {
+      dio.interceptors.add(di.diInstance<AppInterceptors>());
       dio.interceptors.add(di.diInstance<LogInterceptor>());
     }
   }
@@ -123,9 +121,6 @@ class DioConsumer implements ApiConsumer {
   }
 
   dynamic _handelDioError(DioException error) {
-    try {
-      log(error.response!.data['status_message'].toString());
-    } catch (e) {}
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:

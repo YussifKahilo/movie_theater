@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_theater/config/theme/themes_manager.dart';
-import 'package:movie_theater/core/extensions/animations_manager.dart';
 import 'package:movie_theater/core/extensions/padding_manager.dart';
 import 'package:movie_theater/core/extensions/responsive_manager.dart';
 import 'package:movie_theater/core/manager/color_manager.dart';
@@ -87,33 +85,31 @@ class SearchScreen extends StatelessWidget {
                         ).withPadding((PaddingValues.p10, PaddingValues.p16)
                             .pSymmetricVH),
                         Expanded(
-                            child: AnimationLimiter(
-                          child: PaginationList(
-                            page: page,
-                            padding: (
-                              PaddingValues.p16,
-                              PaddingValues.p10,
-                              PaddingValues.p16,
-                              (PaddingValues.p80 +
-                                  (Platform.isAndroid
-                                      ? PaddingValues.p50.rh
-                                      : ScreenUtil().bottomBarHeight))
-                            )
-                                .pOnlyStartTopEndBottom,
-                            dataLength: movies.length,
-                            maxPages: totalPages,
-                            loadMoreData: () {
-                              SearchCubit.get(context).searchFor(
-                                  searchController.text.trim(), ++page);
-                            },
-                            separator: AppSize.s30,
-                            widgetBuilder: (int index) {
-                              return MovieCard(
-                                movie: movies[index],
-                                cacheData: false,
-                              ).animateSlideFade(index);
-                            },
-                          ),
+                            child: PaginationList(
+                          page: page,
+                          padding: (
+                            PaddingValues.p16,
+                            PaddingValues.p10,
+                            PaddingValues.p16,
+                            (PaddingValues.p80 +
+                                (Platform.isAndroid
+                                    ? PaddingValues.p50.rh
+                                    : ScreenUtil().bottomBarHeight))
+                          )
+                              .pOnlyStartTopEndBottom,
+                          dataLength: movies.length,
+                          maxPages: totalPages,
+                          loadMoreData: () {
+                            SearchCubit.get(context).searchFor(
+                                searchController.text.trim(), ++page);
+                          },
+                          separator: AppSize.s30,
+                          widgetBuilder: (int index) {
+                            return MovieCard(
+                              movie: movies[index],
+                              cacheData: false,
+                            );
+                          },
                         )),
                       ],
                     );
