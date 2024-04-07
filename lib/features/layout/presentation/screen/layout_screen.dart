@@ -49,6 +49,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
               left: 0,
               child: BlocBuilder<NetworkConnectivityCubit, bool>(
                 builder: (context, state) {
+                  print(state);
                   return Visibility(
                     visible: !state,
                     child: CustomContainer(

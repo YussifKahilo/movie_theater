@@ -16,6 +16,7 @@ class TwoSelectionDialog extends StatelessWidget {
       required this.secondText,
       required this.secondOnTap,
       this.gradient,
+      this.padding,
       this.color,
       this.titleFont,
       this.haveShadows = false,
@@ -31,7 +32,7 @@ class TwoSelectionDialog extends StatelessWidget {
 
   final Color? color;
   final double? titleFont;
-
+  final EdgeInsetsDirectional? padding;
   final bool haveShadows;
 
   @override
@@ -72,10 +73,12 @@ class TwoSelectionDialog extends StatelessWidget {
                 text: firstText,
                 color: color,
                 haveShadows: haveShadows,
+                padding: padding,
               ),
               AppSize.s15.spaceH,
               CustomContainer(
                 onTap: secondOnTap,
+                padding: padding,
                 isFilled: false,
                 text: secondText,
                 color: gradient != null ? gradient?.colors[0] : color,

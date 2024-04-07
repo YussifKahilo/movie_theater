@@ -9,7 +9,10 @@ class NetworkConnectivityCubit extends Cubit<bool> {
 
   static NetworkConnectivityCubit get(context) => BlocProvider.of(context);
 
-  void checkConnection() {
+  void checkConnection() async {
+    final result = await Connectivity().checkConnectivity();
+    emit(result == ConnectivityResult.wifi ||
+        result == ConnectivityResult.mobile);
     _subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
