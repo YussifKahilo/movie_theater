@@ -77,8 +77,13 @@ class FavoritesList extends StatelessWidget {
                       separator: AppSize.s30,
                       maxPages: totalPages,
                       dataLength: movies.length,
-                      padding: (PaddingValues.p120, PaddingValues.p16)
-                          .pBottomHorizontal,
+                      padding: (
+                        PaddingValues.p16,
+                        PaddingValues.p16,
+                        PaddingValues.p16,
+                        PaddingValues.p120
+                      )
+                          .pOnlyStartTopEndBottom,
                       loadMoreData: () {
                         FavoritesCubit.get(context).getFavorites(++page);
                       },
@@ -93,8 +98,13 @@ class FavoritesList extends StatelessWidget {
                         page: page,
                         separator: AppSize.s30,
                         maxPages: totalPages,
-                        padding: (PaddingValues.p120, PaddingValues.p16)
-                            .pBottomHorizontal,
+                        padding: (
+                          PaddingValues.p16,
+                          PaddingValues.p16,
+                          PaddingValues.p16,
+                          PaddingValues.p120
+                        )
+                            .pOnlyStartTopEndBottom,
                         dataLength: movies.length,
                         loadMoreData: () {
                           FavoritesCubit.get(context).getFavorites(++page);
